@@ -1,0 +1,71 @@
+"use client";
+import Link from "next/link";
+import Image from 'next/image';
+
+// Required for client-side components
+
+function Footer() {
+  const year = new Date().getFullYear();
+
+  return (
+    <footer className="row-start-3 flex flex-wrap items-center justify-center bg-neutral-600">
+      <div className="flex flex-wrap items-center justify-center gap-10 pt-17 pb-4 mx-auto max-w-4xl border-b border-white mb-6">
+        <div>
+          <Link
+            className="inline-block text-lg md:text-xl text-white font-medium"
+            href="/"
+          >
+            <Image
+              src="/logo-white.webp"
+              width={80}
+              height={77}
+              alt="BookClub logo"
+            />
+          </Link>
+        </div>
+        <div>
+          <Link
+            className="inline-block text-md text-white hover:border-b py-[2px] font-medium text-shadow-lg/20"
+            href="/books"
+          >
+            Books
+          </Link>
+        </div>
+        <div>
+          <Link
+            className="inline-block text-md text-white hover:border-b py-[2px] font-medium text-shadow-lg/20"
+            href="/authors"
+          >
+            Authors
+          </Link>
+        </div>
+        <div>
+          <Link
+            className="inline-block text-md text-white hover:border-b py-[2px] font-medium text-shadow-lg/20"
+            href="/membership"
+          >
+            Membership
+          </Link>
+        </div>
+        <div>
+          <Link
+            className="inline-block text-md text-white hover:border-b py-[2px] font-medium text-shadow-lg/20"
+            href="/privacy-policy"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+      </div>
+      <div className="">
+
+      </div>
+      <div className="container px-4 mx-auto">
+        <p className="py-[2px]0 md:pb-10 text-xs text-white text-shadow-lg/30 font-medium text-center">
+          © {year | 2025} BookClub. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  );
+}
+
+export default Footer;
