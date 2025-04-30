@@ -20,15 +20,15 @@ export const resolvers = {
     }*/
   },
 
-  Mutation: {
-    addAuthor: (_: any, { firstName, lastName }: { firstName: string; lastName: string }) => {
+  // Mutation: {
+  //   addAuthor: (_: any, { firstName, lastName }: { firstName: string; lastName: string }) => {
 
-      return null; // Simulated addition
-    },
-    addBook: (_: any, { title, description }: { title: string; description: string }) => {
-      return {
+  //     return null; // Simulated addition
+  //   },
+  //   addBook: (_: any, { title, description }: { title: string; description: string }) => {
+  //     return {
 
-      };
-    }
-  }
+  //     };
+  //   }
+  // }
 };

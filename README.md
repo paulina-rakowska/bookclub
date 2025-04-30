@@ -46,6 +46,4 @@ npm install @apollo/client @apollo/server graphql
 
 npm run dev
 
-tsc
-
-node server/server.ts
+http://localhost:3000/api/graphql
