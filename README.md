@@ -47,3 +47,7 @@ npm install @apollo/client @apollo/server graphql
 npm run dev
 
 http://localhost:3000/api/graphql
+
+npm i --save @fortawesome/fontawesome-svg-core
+npm install --save @fortawesome/free-solid-svg-icons
+npm install --save @fortawesome/react-fontawesome

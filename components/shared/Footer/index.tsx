@@ -1,6 +1,11 @@
 "use client";
 import Link from "next/link";
 import Image from 'next/image';
+import { IoLogoFacebook, IoLogoTiktok  } from "react-icons/io5";
+import { FaYoutube } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
+import { FiInstagram } from "react-icons/fi";
+import { GrLinkedin } from "react-icons/gr";
 
 // Required for client-side components
 
@@ -8,7 +13,7 @@ function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="row-start-3 flex flex-wrap items-center justify-center bg-neutral-600">
+    <footer className="row-start-3 flex flex-wrap flex-col items-center justify-center bg-neutral-600">
       <div className="flex flex-wrap items-center justify-center gap-10 pt-17 pb-4 mx-auto max-w-4xl border-b border-white mb-6">
         <div>
           <Link
@@ -18,7 +23,7 @@ function Footer() {
             <Image
               src="/logo-white.webp"
               width={80}
-              height={77}
+              height={52}
               alt="BookClub logo"
             />
           </Link>
@@ -56,8 +61,21 @@ function Footer() {
           </Link>
         </div>
       </div>
-      <div className="">
-
+      <div className="social-icons mx-auto max-w-4xl flex flex-row mb-4 gap-x-4">
+        <Link href="">
+          <IoLogoFacebook size="30" color="white"/>
+        </Link>
+        <Link href="">
+          <FaYoutube size="30" color="white"/>
+        </Link>
+        <Link href=""></Link>
+        <FaSquareXTwitter size="30" color="white"/>
+        <Link href=""></Link>
+        <FiInstagram size="30" color="white" />
+        <Link href=""></Link>
+        <GrLinkedin size="30" color="white" />
+        <Link href=""></Link>
+        <IoLogoTiktok size="30" color="white" />
       </div>
       <div className="container px-4 mx-auto">
         <p className="py-[2px]0 md:pb-10 text-xs text-white text-shadow-lg/30 font-medium text-center">

@@ -1,11 +1,11 @@
 import { Schema, model } from 'mongoose';
-import BookSchema from './book';
+import defineBookModel from './book';
 
 const defineAuthorModel = async () => {
   const AuthorSchema = new Schema({
     firstName: String,
     lastName: String,
-    books: [BookSchema]!
+    books: [defineBookModel]!
   });
 
   const AuthorModel = model('author', AuthorSchema);
