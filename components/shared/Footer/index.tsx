@@ -61,21 +61,25 @@ function Footer() {
           </Link>
         </div>
       </div>
-      <div className="social-icons mx-auto max-w-4xl flex flex-row mb-4 gap-x-4">
-        <Link href="">
+      <div className="social-icons mx-auto max-w-4xl flex flex-row mb-6 gap-x-4">
+        <Link href="/facebook">
           <IoLogoFacebook size="30" color="white"/>
         </Link>
-        <Link href="">
+        <Link href="/youtube">
           <FaYoutube size="30" color="white"/>
         </Link>
-        <Link href=""></Link>
-        <FaSquareXTwitter size="30" color="white"/>
-        <Link href=""></Link>
-        <FiInstagram size="30" color="white" />
-        <Link href=""></Link>
-        <GrLinkedin size="30" color="white" />
-        <Link href=""></Link>
-        <IoLogoTiktok size="30" color="white" />
+        <Link href="/twitter">
+          <FaSquareXTwitter size="30" color="white"/>
+        </Link>
+        <Link href="/instagram">
+          <FiInstagram size="30" color="white" />
+        </Link>
+        <Link href="/linkedin">
+          <GrLinkedin size="30" color="white" />
+        </Link>
+        <Link href="/tiktok">
+          <IoLogoTiktok size="30" color="white" />
+        </Link>
       </div>
       <div className="container px-4 mx-auto">
         <p className="py-[2px]0 md:pb-10 text-xs text-white text-shadow-lg/30 font-medium text-center">

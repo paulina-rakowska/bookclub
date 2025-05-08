@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGO_URI = process.env.MONGO_URI;
+const MONGO_URI = <string>process.env.MONGO_URI;
 
 if (!MONGO_URI) {
   throw new Error('You must provide a Mongo Atlas URI');

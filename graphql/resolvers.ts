@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { getBooks } from '@/models/book';
+import { getBooks } from '../models/book';
 
 // const Book = mongoose.model('book');
 // const Author = mongoose.model('author');

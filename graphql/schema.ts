@@ -7,7 +7,7 @@ export const typeDefs = gql`#graphql
     id: ID!
     title: String
     description: String
-    authorId: ID!
+    author: Author
   }
   type Author {
     id: ID!

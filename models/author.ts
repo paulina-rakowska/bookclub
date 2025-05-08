@@ -1,19 +1,25 @@
 import { Schema, model } from 'mongoose';
-import defineBookModel from './book';
+import BookI from './book';
+import mongoose from 'mongoose';
 
-const defineAuthorModel = async () => {
-  const AuthorSchema = new Schema({
-    firstName: String,
-    lastName: String,
-    books: [defineBookModel]!
-  });
-
-  const AuthorModel = model('author', AuthorSchema);
-  return AuthorModel;
-
+export interface AuthorI {
+  firstName: string,
+  lastName: string,
+  books: Array<typeof BookI>
 }
 
-export default defineAuthorModel;
+const AuthorSchema = new Schema<AuthorI>({
+  firstName: { type: String, required: true },
+  lastName:  { type: String, required: true },
+  books: [{ type: Schema.Types.ObjectId, ref: 'Book' }]!
+});
+
+const AuthorModel = () => model<AuthorI>('Author', AuthorSchema)
+
+export default (mongoose.models.Author || AuthorModel()) as ReturnType<
+  typeof AuthorModel
+>;
+
 
 // AuthorSchema.statics.findBooks = function(id) {
 //   return this.findById(id)
