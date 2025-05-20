@@ -16,7 +16,7 @@ const BookSchema = new Schema<BookI>({
   author: [{ type:Schema.Types.ObjectId, ref: 'Author' }]
 });
 
-BookSchema.statics.getBooks = async function() {
+BookSchema.statics.getBooks = async function(): Promise<BookI[]> {
   try {
     const data = await this.find({}).populate('author');
     return data;
@@ -26,26 +26,34 @@ BookSchema.statics.getBooks = async function() {
   }
 }
 
-BookSchema.statics.getBookById = async function(id: ID) {
+BookSchema.statics.getBookById = async function(id: ID): Promise<BookI> {
   try {
     const data = await this.findById(id).populate('author');
-    return data;
+    console.log("in getBookById");
+    console.log(data);
+    return data as BookI;
   } catch (err) {
     console.log(err);
     throw new Error('Failed to get books');
   }
 }
 
-BookSchema.statics.addBook = async function(title, description, authorId) {
-  const author = AuthorModel.getAuthorById(authorId);
-  console.log("author");
-  console.log(author);
+BookSchema.statics.addBook = async function(title: string, description: string, authorId: ID): Promise<BookI> {
+  const author = await AuthorModel.getAuthorById(authorId);
   if (!author) throw new Error('Author not found');
-  const book = new this({ title, description, authorId });
-  console.log(book);
-  if(author) author.books.push(book);
-  await Promise.all([book.save(), author.save()])
-  return book;
+  
+  const book = new this({ title, description, author: [authorId] });
+  await book.save();
+    // Add the book to the author's books array
+  author.books.push(book);
+  await author.save();
+
+  // Explicitly populate the author field
+  await book.populate('author');
+
+  await book.save();
+
+  return book as BookI;
 
 }
 

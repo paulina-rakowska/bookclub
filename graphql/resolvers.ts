@@ -1,4 +1,4 @@
-import { ID } from '@/models/book';
+import { BookI, ID } from '@/models/book';
 import { AuthorI } from '@/models/author';
 import BookModel from '@/models/book';
 import AuthorModel from '@/models/author';
@@ -9,14 +9,22 @@ export const resolvers = {
       return await BookModel.getBooks();
     },
     author: async (_: Promise<AuthorI | null>, { id }: { id: ID }) => {
-      return await AuthorModel.getAuthorById(id);
+      const author = await AuthorModel.getAuthorById(id);
+      console.log("in author");
+      console.log(author);
+      return author as AuthorI;
     },
-    bookById: async (_: any, { id }: { id: ID }) => {   
-      return await BookModel.getBookById(id);
+    book: async (_: Promise<BookI | null>, { id }: { id: ID }) => {   
+      const book = await BookModel.getBookById(id);
+      if (!book) throw new Error('Book not found');
+      await book.populate('author');
+      console.log("in resolvers");
+      console.log(book);
+      return book as BookI;
     },
-  /*  authors: async() => {
-      return await Author.getAuthors();
-    }*/
+    authors: async() => {
+      return await AuthorModel.getAuthors();
+    }
   },
 
   Mutation: {
@@ -24,7 +32,7 @@ export const resolvers = {
       return await new AuthorModel({ firstName, lastName }).save();
     },
     addBook: async (_parent, { title, description, authorId }: { title: string; description: string; authorId: ID}) => {
-      return await new BookModel({ title, description, author: [authorId] }).save();
+      return await BookModel.addBook(title, description, authorId);
     }
   }
 };

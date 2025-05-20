@@ -7,7 +7,7 @@ export const typeDefs = gql`#graphql
     id: ID!
     title: String!
     description: String
-    author: Author
+    author: [Author!]!
   }
   type Author {
     id: ID!
@@ -18,14 +18,13 @@ export const typeDefs = gql`#graphql
 
   type Query {
     books: [Book]
-    booksById(id: ID!): Book
-    bookById(id: ID!): Book
+    book(id: ID!): Book
     authors: [Author]
     author(id: ID!): Author
   }
 
   type Mutation {
-    addAuthor(firstName: String!, lastName: String!): Author
+    addAuthor(firstName: String!, lastName: String!): Author!
     addBook(title: String!, description: String!, authorId: ID!): Book!
   }
 

@@ -1,11 +1,16 @@
 import { gql } from '@apollo/client';
 
 const AUTHOR_QUERY = gql`
-  query GetAuthor($id: ID!) {
-    author(id: $id) {
+  query GetAuthors {
+    authors {
         id
         firstName
         lastName
+        books {
+            id
+            title
+            description
+        }
     }
   }
 `;

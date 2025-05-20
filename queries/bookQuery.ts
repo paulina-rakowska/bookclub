@@ -5,11 +5,12 @@ const BOOK_QUERY = gql`
     book(id: $id) {
       id
       title
+      description
       author {
+        id
         firstName
         lastName
       }
-      description
     }
   }
 `;

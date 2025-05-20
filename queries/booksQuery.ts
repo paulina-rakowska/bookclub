@@ -5,11 +5,12 @@ const BOOKS_QUERY = gql`
     books {
       id
       title
+      description
       author {
+        id
         firstName
         lastName
       }
-      description
     }
   }
 `;
