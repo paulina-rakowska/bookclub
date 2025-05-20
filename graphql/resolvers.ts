@@ -1,34 +1,30 @@
-import mongoose from 'mongoose';
-import { getBooks } from '../models/book';
-
-// const Book = mongoose.model('book');
-// const Author = mongoose.model('author');
+import { ID } from '@/models/book';
+import { AuthorI } from '@/models/author';
+import BookModel from '@/models/book';
+import AuthorModel from '@/models/author';
 
 export const resolvers = {
   Query: {
-    books: async () => {
-      return await getBooks();
+    books: async ()=> {
+      return await BookModel.getBooks();
     },
-   /* bookById: async (_: any, { id }: { id: number }) => {   
-      return await Book.getBookById(id);
+    author: async (_: Promise<AuthorI | null>, { id }: { id: ID }) => {
+      return await AuthorModel.getAuthorById(id);
     },
-    authors: async() => {
+    bookById: async (_: any, { id }: { id: ID }) => {   
+      return await BookModel.getBookById(id);
+    },
+  /*  authors: async() => {
       return await Author.getAuthors();
-    },
-    authorById: async (_: any, { id }: { id: number }) => {
-      return await Author.getAuthorById(id);
     }*/
   },
 
-  // Mutation: {
-  //   addAuthor: (_: any, { firstName, lastName }: { firstName: string; lastName: string }) => {
-
-  //     return null; // Simulated addition
-  //   },
-  //   addBook: (_: any, { title, description }: { title: string; description: string }) => {
-  //     return {
-
-  //     };
-  //   }
-  // }
+  Mutation: {
+    addAuthor: async (_parent, { firstName, lastName }: { firstName: string; lastName: string }) => {
+      return await new AuthorModel({ firstName, lastName }).save();
+    },
+    addBook: async (_parent, { title, description, authorId }: { title: string; description: string; authorId: ID}) => {
+      return await new BookModel({ title, description, author: [authorId] }).save();
+    }
+  }
 };

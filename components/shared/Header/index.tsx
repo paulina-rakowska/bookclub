@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from 'next/image';
 import "./header.css";
 
-function Header() {
+const Header = () => {
     return (
         <header className="flex justify-between items-center bg-gray-50 w-full sticky px-8">
             <div className="w-1/2 xl:w-1/3">

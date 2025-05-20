@@ -9,7 +9,7 @@ import { GrLinkedin } from "react-icons/gr";
 
 // Required for client-side components
 
-function Footer() {
+const Footer = () => {
   const year = new Date().getFullYear();
 
   return (

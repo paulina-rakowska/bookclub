@@ -14,6 +14,8 @@ const server = new ApolloServer({
 
 const handler = startServerAndCreateNextHandler(server);
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const nextHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   return handler(req, res);
 };
+
+export default nextHandler;

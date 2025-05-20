@@ -5,7 +5,7 @@ import { gql } from "apollo-server-micro";
 export const typeDefs = gql`#graphql
   type Book {
     id: ID!
-    title: String
+    title: String!
     description: String
     author: Author
   }
@@ -18,11 +18,15 @@ export const typeDefs = gql`#graphql
 
   type Query {
     books: [Book]
-    booksById(id: Int!): Book
+    booksById(id: ID!): Book
+    bookById(id: ID!): Book
+    authors: [Author]
+    author(id: ID!): Author
   }
-`;
 
-// type Mutation {
-//   addAuthor(firstName: String!, lastName: String!): Author!
-//   addBook(title: String!, description, authorId: ID!): Book!
-// }
+  type Mutation {
+    addAuthor(firstName: String!, lastName: String!): Author
+    addBook(title: String!, description: String!, authorId: ID!): Book!
+  }
+
+`;
