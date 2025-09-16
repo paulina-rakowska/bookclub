@@ -4,14 +4,15 @@ import Header from "../../../components/shared/Header";
 import Footer from "../../../components/shared/Footer";
 
 import { useParams } from "next/navigation";
+import AUTHOR_QUERY from "@/queries/authorQuery";
 
 function AuthorPage() {
   const { id } = useParams();
 
-  // const { loading, error, data } = useQuery(BOOK_QUERY, {
-  //   variables: { id },
-  //   skip: !id,
-  // });
+  const { loading, error, data } = useQuery(AUTHOR_QUERY, {
+    variables: { id },
+    skip: !id,
+  });
 
   // if (loading) return <p>Loading...</p>;
   // if (error) return <p>Error: {error.message}</p>;
