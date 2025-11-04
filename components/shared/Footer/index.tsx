@@ -1,4 +1,5 @@
 "use client";
+import { BookOpenText } from "lucide-react";
 import Link from "next/link";
 import Image from 'next/image';
 import { IoLogoFacebook, IoLogoTiktok  } from "react-icons/io5";
@@ -13,19 +14,16 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="row-start-3 flex flex-wrap flex-col items-center justify-center bg-neutral-600">
+    <footer className="row-start-3 flex flex-wrap flex-col items-center justify-center bg-gray-800">
       <div className="flex flex-wrap items-center justify-center gap-10 pt-17 pb-4 mx-auto max-w-4xl border-b border-white mb-6">
         <div>
           <Link
             className="inline-block text-lg md:text-xl text-white font-medium"
             href="/"
           >
-            <Image
-              src="/logo-white.webp"
-              width={80}
-              height={52}
-              alt="BookClub logo"
-            />
+              <div className="w-10 h-8 bg-white rounded-lg flex items-center justify-center relative z-10">
+                <BookOpenText className="h-5 w-5 text-primary" />
+              </div>
           </Link>
         </div>
         <div>

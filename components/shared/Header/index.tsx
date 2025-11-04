@@ -1,6 +1,6 @@
 
 
-import { Search, Menu, BookOpen } from "lucide-react"
+import { Search, Menu, BookOpenText } from "lucide-react"
 import Link from "next/link";
 import Image from 'next/image';
 import "./header.css";
@@ -14,10 +14,8 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="relative">
-              <div className="w-10 h-8 bg-secondary rounded-lg transform -rotate-3 absolute"></div>
-              <div className="w-10 h-8 bg-secondary/80 rounded-lg transform rotate-2 absolute"></div>
               <div className="w-10 h-8 bg-white rounded-lg flex items-center justify-center relative z-10">
-                <BookOpen className="h-5 w-5 text-primary" />
+                <BookOpenText className="h-5 w-5 text-primary" />
               </div>
             </div>
             <span className="text-xl font-bold ml-2">BookClub</span>

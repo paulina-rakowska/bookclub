@@ -1,12 +1,11 @@
 import React from 'react';
 import Link from "next/link";
-import BookI from '@/models/book';
+import { BookI } from '@/models/book';
 import Image from 'next/image'
 
 const Books = (props) => {
   let { books } = props;
 
-  console.log(books);
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -43,12 +42,17 @@ const Books = (props) => {
               {books.map((book: BookI) => (
                 // <BookCard key={book.id} {...book}/>
                 <Link key={book.id} href={`/book/${book.id}`}>
-                    <Image
-                    src={`/images/books/book-${book.id}.webp`}
+                  {book.cover ? <Image
+                    src={`/images/books/${book.id}/book-300x432.webp`}
                     alt={book.title}
                     width={300}
                     height={432}
-                  />
+                  /> : <Image
+                    src={`/placeholders/book-placeholder.webp`}
+                    alt={book.title}
+                    width={300}
+                    height={432}
+                  />}
                 {book.title}
                 </Link>
               ))}

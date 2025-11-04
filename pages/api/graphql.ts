@@ -5,8 +5,6 @@ import { typeDefs } from '@/graphql/schema';
 import { resolvers } from '@/graphql/resolvers';
 import dbConnect from '@/lib/mongoose';
 
-dbConnect(); // Ensure that the database is connected
-
 const server = new ApolloServer({
   typeDefs,
   resolvers
@@ -15,6 +13,7 @@ const server = new ApolloServer({
 const handler = startServerAndCreateNextHandler(server);
 
 const nextHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  await dbConnect(); // Move it here and await it
   return handler(req, res);
 };
 

@@ -5,9 +5,11 @@ import AuthorModel from '@/models/author';
 export type ID = string | number;
 
 export interface BookI {
+  id?: string;
   title: string;
   description: string;
   author: AuthorI[]
+  cover: boolean
 }
 
 const BookSchema = new Schema<BookI>({

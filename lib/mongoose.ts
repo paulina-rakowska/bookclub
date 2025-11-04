@@ -6,6 +6,13 @@ if (!MONGO_URI) {
   throw new Error('You must provide a Mongo Atlas URI');
 }
 
+declare global {
+  let mongoose: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
+}
+
 let cached = global.mongoose;
 
 if (!cached) {
