@@ -15,7 +15,7 @@ function BooksPage() {
   if (error) return <p>Error: {error.message}</p>;
 
   const { books } = data;
-
+console.log(books);
   return (
     <div className="w-full">
       <Header />
