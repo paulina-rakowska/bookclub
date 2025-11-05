@@ -8,13 +8,14 @@ export interface BookI {
   id?: string;
   title: string;
   description: string;
-  author: AuthorI[]
   cover: boolean
+  author: AuthorI[]
 }
 
 const BookSchema = new Schema<BookI>({
   title:{ type: String, required: true },
   description: { type: String, required: true },
+  cover: { type: Boolean, default: true },
   author: [{ type:Schema.Types.ObjectId, ref: 'Author' }]
 });
 
@@ -38,7 +39,7 @@ BookSchema.statics.getBookById = async function(id: ID): Promise<BookI> {
   }
 }
 
-BookSchema.statics.addBook = async function(title: string, description: string, authorIds: [ID]): Promise<BookI> {
+BookSchema.statics.addBook = async function(title: string, description: string, cover: boolean, authorIds: [ID]): Promise<BookI> {
   console.log(authorIds);
   const authors = await AuthorModel.find({ '_id': { $in: authorIds } });
   console.log(authors);
@@ -46,7 +47,7 @@ BookSchema.statics.addBook = async function(title: string, description: string, 
     throw new Error('No authors found');
   }
   
-  const book = new this({ title, description, author: authorIds });
+  const book = new this({ title, description, cover, author: authorIds });
   await book.save();
     console.log(book);
 

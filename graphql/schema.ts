@@ -7,6 +7,7 @@ export const typeDefs = gql`#graphql
     id: ID!
     title: String!
     description: String
+    cover: Boolean!
     author: [Author!]!
   }
   type Author {
@@ -25,7 +26,7 @@ export const typeDefs = gql`#graphql
 
   type Mutation {
     addAuthor(firstName: String!, lastName: String!): Author!
-    addBook(title: String!, description: String!, authorIds: [ID!]!): Book!
+    addBook(title: String!, description: String, cover: Boolean!, authorIds: [ID!]!): Book!
   }
 
 `;

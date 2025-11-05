@@ -31,8 +31,8 @@ export const resolvers = {
     addAuthor: async (_parent, { firstName, lastName }: { firstName: string; lastName: string }) => {
       return await new AuthorModel({ firstName, lastName }).save();
     },
-    addBook: async (_parent, { title, description, authorIds }: { title: string; description: string; authorIds: [ID]}) => {
-      return await BookModel.addBook(title, description, authorIds);
+    addBook: async (_parent, { title, description, cover, authorIds }: { title: string; description: string; cover: boolean; authorIds: [ID]}) => {
+      return await BookModel.addBook(title, description, cover, authorIds);
     }
   }
 };
