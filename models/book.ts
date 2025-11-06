@@ -1,6 +1,7 @@
 import { Schema, model, models } from 'mongoose';
 import { AuthorI } from './author';
 import AuthorModel from '@/models/author';
+import { CategoryI } from './category';
 
 export type ID = string | number;
 
@@ -10,13 +11,15 @@ export interface BookI {
   description: string;
   cover: boolean
   author: AuthorI[]
+  category: CategoryI[]
 }
 
 const BookSchema = new Schema<BookI>({
   title:{ type: String, required: true },
   description: { type: String, required: true },
-  cover: { type: Boolean, default: true },
-  author: [{ type:Schema.Types.ObjectId, ref: 'Author' }]
+  cover: { type: Boolean, default: false },
+  author: [{ type:Schema.Types.ObjectId, ref: 'Author' }],
+  category: [{ type:Schema.Types.ObjectId, ref: 'Category' }]
 });
 
 BookSchema.statics.getBooks = async function(): Promise<BookI[]> {
@@ -24,7 +27,6 @@ BookSchema.statics.getBooks = async function(): Promise<BookI[]> {
     const data = await this.find({}).populate('author');
     return data;
   } catch (err) {
-    console.log(err);
     throw new Error('Failed to get books');
   }
 }
@@ -34,7 +36,6 @@ BookSchema.statics.getBookById = async function(id: ID): Promise<BookI> {
     const data = await this.findById(id).populate('author');
     return data as BookI;
   } catch (err) {
-    console.log(err);
     throw new Error('Failed to get books');
   }
 }

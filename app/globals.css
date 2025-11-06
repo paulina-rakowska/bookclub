@@ -1,10 +1,15 @@
 @import "tailwindcss";
 /* @import 'tw-animate-css'; */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+}
 
+/* Then your custom styles */
 * {
   box-sizing: border-box;
 }

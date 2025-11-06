@@ -1,7 +1,6 @@
 import React from 'react';
-import Link from "next/link";
 import { BookI } from '@/models/book';
-import Image from 'next/image'
+import { BookCard } from '../ui/book-card';
 
 const Books = (props) => {
   let { books } = props;
@@ -40,21 +39,21 @@ const Books = (props) => {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
               {books.map((book: BookI) => (
-                // <BookCard key={book.id} {...book}/>
-                <Link key={book.id} href={`/book/${book.id}`}>
-                  {book.cover ? <Image
-                    src={`/images/books/${book.id}/book-300x432.webp`}
-                    alt={book.title}
-                    width={300}
-                    height={432}
-                  /> : <Image
-                    src={`/placeholders/book-placeholder.webp`}
-                    alt={book.title}
-                    width={300}
-                    height={432}
-                  />}
-                {book.title}
-                </Link>
+                <BookCard key={book.id} {...book}/>
+                // <Link key={book.id} href={`/book/${book.id}`}>
+                //   {book.cover ? <Image
+                //     src={`/images/books/${book.id}/book-300x432.webp`}
+                //     alt={book.title}
+                //     width={300}
+                //     height={432}
+                //   /> : <Image
+                //     src={`/placeholders/book-placeholder.webp`}
+                //     alt={book.title}
+                //     width={300}
+                //     height={432}
+                //   />}
+                // {book.title}
+                // </Link>
               ))}
             </div>
 

@@ -15,12 +15,11 @@ function BooksPage() {
   if (error) return <p>Error: {error.message}</p>;
 
   const { books } = data;
-console.log(books);
+
   return (
     <div className="w-full">
       <Header />
       <main className="flex flex-col p-8">
-        Books catalogue
         <Books books={books} />
       </main>
       <Footer />

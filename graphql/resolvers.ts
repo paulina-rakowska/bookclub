@@ -2,17 +2,12 @@ import { BookI, ID } from '@/models/book';
 import { AuthorI } from '@/models/author';
 import BookModel from '@/models/book';
 import AuthorModel from '@/models/author';
+import CategoryModel from '@/models/category';
 
 export const resolvers = {
   Query: {
     books: async ()=> {
       return await BookModel.getBooks();
-    },
-    author: async (_: Promise<AuthorI | null>, { id }: { id: ID }) => {
-      const author = await AuthorModel.getAuthorById(id);
-      console.log("in author");
-      console.log(author);
-      return author as AuthorI;
     },
     book: async (_: Promise<BookI | null>, { id }: { id: ID }) => {   
       const book = await BookModel.getBookById(id);
@@ -24,15 +19,37 @@ export const resolvers = {
     },
     authors: async() => {
       return await AuthorModel.getAuthors();
-    }
+    },
+    author: async (_: Promise<AuthorI | null>, { id }: { id: ID }) => {
+      const author = await AuthorModel.getAuthorById(id);
+      console.log("in author");
+      console.log(author);
+      return author as AuthorI;
+    },
+    categories: async() => {
+      return await CategoryModel.getCategories();
+    },
   },
 
   Mutation: {
     addAuthor: async (_parent, { firstName, lastName }: { firstName: string; lastName: string }) => {
       return await new AuthorModel({ firstName, lastName }).save();
     },
-    addBook: async (_parent, { title, description, cover, authorIds }: { title: string; description: string; cover: boolean; authorIds: [ID]}) => {
+    addBook: async (_parent, { title, description, cover, authorIds, categoryIds }: { title: string; description: string; cover: boolean; authorIds: [ID]}) => {
       return await BookModel.addBook(title, description, cover, authorIds);
+    },
+    addCategory: async (_parent, { name }: { name: string }) => {
+      return await CategoryModel.addCategory(name);
+    },
+    updateBookCover: async (_parent, { id, cover }: { id: ID; cover: boolean }) => {
+      const book = await BookModel.findByIdAndUpdate(
+        id,
+        { cover },
+        { new: true } // Return the updated document
+      ).populate('author');
+      
+      if (!book) throw new Error('Book not found');
+      return book;
     }
   }
 };
