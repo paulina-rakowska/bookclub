@@ -1,26 +1,29 @@
-"use client"; // Required for client-side components
-
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
-import Books from '@/components/Books';
-
-import { useQuery } from "@apollo/client";
-// import { useRouter } from "next/router";
+import BooksClient from '@/components/Books/BooksClient';
+import { getClient } from '@/lib/apollo-client-server';
 import BOOKS_QUERY from "@/queries/booksQuery";
+import CATEGORIES_QUERY from "@/queries/categoriesQuery";
 
-function BooksPage() {
-  const { loading, error, data } = useQuery(BOOKS_QUERY);
+async function BooksPage() {
+  const client = getClient();
+  
+  // Fetch initial data on server
+  const [booksResult, categoriesResult] = await Promise.all([
+    client.query({ query: BOOKS_QUERY, variables: { page: 1, limit: 12 } }),
+    client.query({ query: CATEGORIES_QUERY }),
+  ]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  const { books } = data;
 
   return (
     <div className="w-full">
       <Header />
       <main className="flex flex-col p-8">
-        <Books books={books} />
+        {/* Pass initial data to client component */}
+        <BooksClient 
+          initialBooks={booksResult.data.books} 
+          categories={categoriesResult.data.categories}
+        />
       </main>
       <Footer />
     </div>
