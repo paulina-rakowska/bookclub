@@ -12,6 +12,10 @@ const BOOKS_QUERY = gql`
         firstName
         lastName
       }
+      category {
+        id
+        name
+      }
     }
   }
 `;

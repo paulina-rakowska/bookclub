@@ -28,6 +28,7 @@ export const typeDefs = gql`#graphql
     authors: [Author]
     author(id: ID!): Author
     categories: [Category]
+    category(id: ID!): Category
   }
 
   type Mutation {

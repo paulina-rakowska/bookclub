@@ -3,6 +3,7 @@ import { BookI, ID } from './book';
 
 
 export interface AuthorI {
+  id?: ID;
   firstName: string,
   lastName: string,
   books: BookI[]

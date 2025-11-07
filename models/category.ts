@@ -3,6 +3,7 @@ import { Schema, model, models } from 'mongoose';
 export type ID = string | number;
 
 export interface CategoryI {
+  id?: ID;
   name: string;
 }
 

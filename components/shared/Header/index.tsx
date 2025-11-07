@@ -12,14 +12,14 @@ const Header = () => {
     <header className="bg-primary text-primary-foreground shadow-sm">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <div className="w-10 h-8 bg-white rounded-lg flex items-center justify-center relative z-10">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="relative">
+              <span className="w-10 h-8 bg-white rounded-lg flex items-center justify-center relative z-10">
                 <BookOpenText className="h-5 w-5 text-primary" />
-              </div>
-            </div>
+              </span>
+            </span>
             <span className="text-xl font-bold ml-2">BookClub</span>
-          </div>
+          </Link>
 
           {/* Search Bar - Hidden on mobile */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">
