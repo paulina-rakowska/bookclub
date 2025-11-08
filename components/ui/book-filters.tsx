@@ -1,20 +1,8 @@
-"use client"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { X } from "lucide-react"
-
-const categories = [
-  "All Books",
-  "Fiction",
-  "Non-Fiction",
-  "Mystery",
-  "Romance",
-  "Sci-Fi",
-  "Fantasy",
-  "Biography",
-  "History",
-  "Self-Help",
-]
+"use client";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { X } from "lucide-react";
+import { CategoryI } from "@/models/category";
 
 const sortOptions = [
   { value: "popular", label: "Most Popular" },
@@ -22,34 +10,48 @@ const sortOptions = [
   { value: "newest", label: "Newest" },
   { value: "title", label: "Title A-Z" },
   { value: "author", label: "Author A-Z" },
-]
+];
 
 interface BookFiltersProps {
-  selectedCategory: string
-  onCategoryChange: (category: string) => void
+  selectedCategory: string;
+  onCategoryChange: (category: string) => void;
+  categories: CategoryI[];
 }
 
-export function BookFilters({ selectedCategory, onCategoryChange}: BookFiltersProps) {
+export function BookFilters({
+  selectedCategory,
+  onCategoryChange,
+  categories,
+}: BookFiltersProps) {
   return (
-    <div className="space-y-6">
-      {/* Category Filters */}
-      <div>
+    <>
+      <div className="space-y-2">
         <h3 className="font-semibold mb-3">Categories</h3>
         <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
             <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              size="sm"
-              onClick={() => onCategoryChange(category)}
-              className={selectedCategory === category ? "bg-primary" : ""}
+                variant="filter"
+                size="filter"
+                className="w-full"
+                data-active={selectedCategory === null}
+                onClick={() => onCategoryChange(null)}
             >
-              {category}
+            All Categories
             </Button>
-          ))}
+          {categories &&
+            categories.map((category: CategoryI) => (
+              <Button
+                key={category.id}
+                variant="filter"
+                size="filter"
+                className="w-full"
+                data-active={selectedCategory === category.id}
+                onClick={() => onCategoryChange(category.id)}
+              >
+                {category.name}
+              </Button>
+            ))}
         </div>
       </div>
-
-    </div>
-  )
+    </>
+  );
 }

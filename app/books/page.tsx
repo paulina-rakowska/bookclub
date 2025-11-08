@@ -1,33 +1,78 @@
+// app/books/page.tsx (Server Component)
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
-import BooksClient from '@/components/Books/BooksClient';
-import { getClient } from '@/lib/apollo-client-server';
-import BOOKS_QUERY from "@/queries/booksQuery";
-import CATEGORIES_QUERY from "@/queries/categoriesQuery";
+import Books from '@/components/Books';
 
-async function BooksPage() {
-  const client = getClient();
-  
-  // Fetch initial data on server
-  const [booksResult, categoriesResult] = await Promise.all([
-    client.query({ query: BOOKS_QUERY, variables: { page: 1, limit: 12 } }),
-    client.query({ query: CATEGORIES_QUERY }),
-  ]);
+async function getBooks() {
+  const res = await fetch('http://localhost:3000/api/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: `
+        query GetBooks {
+          books {
+            id
+            title
+            description
+            cover
+            author {
+              id
+              firstName
+              lastName
+            }
+            category {
+              id
+              name
+            }
+          }
+        }
+      `
+    }),
+    cache: 'no-store', // or 'force-cache' for static generation
+  });
+
+  const { data } = await res.json();
+  return data.books;
+}
+
+async function getCategories() {
+  const res = await fetch('http://localhost:3000/api/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: `
+            query GetCategories {
+              categories {
+                id
+                name
+              }
+            }
+      `
+    }),
+    cache: 'force-cache', // or 'force-cache' for static generation
+  });
+
+  const { data } = await res.json();
+  return data.categories;
+}
 
 
+export default async function BooksPage() {
+  const books = await getBooks();
+  const categories = await getCategories();
+console.log(books);
   return (
-    <div className="w-full">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex flex-col p-8">
-        {/* Pass initial data to client component */}
-        <BooksClient 
-          initialBooks={booksResult.data.books} 
-          categories={categoriesResult.data.categories}
-        />
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <Books initialBooks={books} categories={categories} />
       </main>
       <Footer />
     </div>
   );
 }
 
-export default BooksPage;
+export const metadata = {
+  title: 'Books Catalogue',
+  description: 'Discover your next favorite book from our curated collection',
+};

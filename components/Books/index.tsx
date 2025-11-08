@@ -1,18 +1,21 @@
-// components/Books/BooksClient.tsx
+// components/Books/Books.tsx
 'use client';
 
 import { useState } from 'react';
-import { useQuery } from '@apollo/client';
+import { useQuery } from "@apollo/client/react";
 import { BookCard } from '@/components/ui/book-card';
 import { Button } from '@/components/ui/button';
 import BOOKS_QUERY from '@/queries/booksQuery';
+import { CategoryI } from '@/models/category';
+import { BookI } from '@/models/book';
+import { BookFilters } from '../ui/book-filters';
 
-interface BooksClientProps {
-  initialBooks: any;
-  categories: any[];
+interface BooksProps {
+  initialBooks: BookI[];
+  categories: CategoryI[];
 }
 
-export default function BooksClient({ initialBooks, categories }: BooksClientProps) {
+export default function Books({ initialBooks, categories }: BooksProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
@@ -33,10 +36,22 @@ export default function BooksClient({ initialBooks, categories }: BooksClientPro
   };
 
   return (
+    <>  {/* Page Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-balance mb-2">Books Catalogue</h1>
+          <p className="text-muted-foreground text-pretty">
+            Discover your next favorite book from our curated collection
+          </p>
+        </div>
     <div className="flex flex-col lg:flex-row gap-8">
       {/* Sidebar */}
       <aside className="lg:w-64 flex-shrink-0">
-        <div className="space-y-2">
+         <BookFilters
+              selectedCategory={selectedCategory}
+              onCategoryChange={handleCategoryChange}
+              categories={categories}
+          />
+        {/* <div className="space-y-2">
           <Button
             variant={selectedCategory === null ? "default" : "outline"}
             className="w-full justify-start"
@@ -44,7 +59,7 @@ export default function BooksClient({ initialBooks, categories }: BooksClientPro
           >
             All Categories
           </Button>
-          {categories.map((category: any) => (
+          {categories && categories.map((category: CategoryI) => (
             <Button
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
@@ -54,7 +69,7 @@ export default function BooksClient({ initialBooks, categories }: BooksClientPro
               {category.name}
             </Button>
           ))}
-        </div>
+        </div> */}
       </aside>
 
       {/* Books Grid */}
@@ -64,7 +79,7 @@ export default function BooksClient({ initialBooks, categories }: BooksClientPro
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {booksData?.books.map((book: any) => (
+              {booksData && booksData?.map((book: BookI) => (
                 <BookCard key={book.id} {...book} />
               ))}
             </div>
@@ -92,6 +107,6 @@ export default function BooksClient({ initialBooks, categories }: BooksClientPro
           </>
         )}
       </div>
-    </div>
+    </div></>
   );
 }

@@ -47,7 +47,9 @@ export function BookCard({
       <CardContent className="p-4">
         <div className="space-y-2">
           <Badge variant="secondary" className="text-xs">
-            {category}
+            {category.map((cat)=> {
+              return cat.name;
+            })}
           </Badge>
 
           <h3 className="font-semibold text-lg leading-tight line-clamp-2 text-balance">{title}</h3>

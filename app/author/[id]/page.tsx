@@ -4,7 +4,7 @@ import Header from "../../../components/shared/Header";
 import Footer from "../../../components/shared/Footer";
 
 import { useParams } from "next/navigation";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import AUTHOR_QUERY from "@/queries/authorQuery";
 
 function AuthorPage() {

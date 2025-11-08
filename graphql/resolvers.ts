@@ -2,7 +2,7 @@ import { BookI, ID } from "@/models/book";
 import { AuthorI } from "@/models/author";
 import BookModel from "@/models/book";
 import AuthorModel from "@/models/author";
-import CategoryModel from "@/models/category";
+import CategoryModel, { CategoryI } from "@/models/category";
 
 export const resolvers = {
   Query: {

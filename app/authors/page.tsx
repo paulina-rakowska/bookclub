@@ -3,7 +3,7 @@
 import Header from "../../components/shared/Header";
 import Footer from "../../components/shared/Footer";
 
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import AUTHORS_QUERY from "../../queries/authorsQuery";
 
 import Authors from "@/components/Authors";
