@@ -29,7 +29,12 @@ export default function Books({ initialBooks, categories }: BooksProps) {
   const booksData = (currentPage === 1 && selectedCategory === null) 
     ? initialBooks 
     : data?.books;
-
+  
+  // Calculate totalPages - you may need to adjust this based on your API response
+  // For now, using a fixed value or calculating from data length
+  const totalPages = 5; // TODO: Get this from API response
+  const books = Array.isArray(booksData) ? booksData : [];
+  
   const handleCategoryChange = (categoryId: string | null) => {
     setSelectedCategory(categoryId);
     setCurrentPage(1);
@@ -51,25 +56,6 @@ export default function Books({ initialBooks, categories }: BooksProps) {
               onCategoryChange={handleCategoryChange}
               categories={categories}
           />
-        {/* <div className="space-y-2">
-          <Button
-            variant={selectedCategory === null ? "default" : "outline"}
-            className="w-full justify-start"
-            onClick={() => handleCategoryChange(null)}
-          >
-            All Categories
-          </Button>
-          {categories && categories.map((category: CategoryI) => (
-            <Button
-              key={category.id}
-              variant={selectedCategory === category.id ? "default" : "outline"}
-              className="w-full justify-start"
-              onClick={() => handleCategoryChange(category.id)}
-            >
-              {category.name}
-            </Button>
-          ))}
-        </div> */}
       </aside>
 
       {/* Books Grid */}
@@ -79,26 +65,26 @@ export default function Books({ initialBooks, categories }: BooksProps) {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {booksData && booksData?.map((book: BookI) => (
+              {books && books.map((book: BookI) => (
                 <BookCard key={book.id} {...book} />
               ))}
             </div>
             
             {/* Pagination */}
-            {booksData?.totalPages > 1 && (
+            {totalPages > 1 && (
               <div className="flex justify-center gap-2 mt-8">
                 <Button
                   onClick={() => setCurrentPage(p => p - 1)}
-                  disabled={!booksData.hasPreviousPage}
+                  disabled={currentPage === 1}
                 >
                   Previous
                 </Button>
                 <span className="flex items-center px-4">
-                  Page {booksData.currentPage} of {booksData.totalPages}
+                  Page {currentPage} of {totalPages}
                 </span>
                 <Button
                   onClick={() => setCurrentPage(p => p + 1)}
-                  disabled={!booksData.hasNextPage}
+                  disabled={currentPage === totalPages}
                 >
                   Next
                 </Button>

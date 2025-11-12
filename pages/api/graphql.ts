@@ -13,7 +13,7 @@ const server = new ApolloServer({
 const handler = startServerAndCreateNextHandler(server);
 
 const nextHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  await dbConnect(); // Move it here and await it
+  await dbConnect(); 
   return handler(req, res);
 };
 

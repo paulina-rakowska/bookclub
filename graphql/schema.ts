@@ -35,7 +35,8 @@ export const typeDefs = gql`#graphql
     addAuthor(firstName: String!, lastName: String!): Author!
     addBook(title: String!, description: String, cover: Boolean!, authorIds: [ID!]!, categoryIds: [ID]): Book!
     addCategory(name: String!): Category!
-    updateBookCover(id: ID!, cover: Boolean!): Book!  # Add this line
+    updateBookCover(id: ID!, cover: Boolean!): Book!  
+    updateBookCategory(id: ID!, categoryId: ID!): Book! 
   }
 
 `;

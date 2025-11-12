@@ -71,7 +71,6 @@ BookSchema.statics.addBook = async function (
     category: categoryIds || [],
   });
   await book.save();
-  console.log(book);
 
   // Add the book to each author's books array
   for (const author of authors) {

@@ -86,5 +86,20 @@ export const resolvers = {
       if (!book) throw new Error("Book not found");
       return book;
     },
+    updateBookCategory: async (
+      _parent,
+      { id, categoryId }: { id: ID; categoryId: ID }
+    ) => {
+      const category = await CategoryModel.getCategoryById(categoryId);
+      if (!category) throw new Error("Category not found");
+      const book = await BookModel.findByIdAndUpdate(
+        id,
+        { category },
+        { new: true } // Return the updated document
+      ).populate("category").populate("author");
+
+      if (!book) throw new Error("Book not found");
+      return book;
+    },
   },
 };

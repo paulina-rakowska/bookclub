@@ -60,7 +60,7 @@ async function getCategories() {
 export default async function BooksPage() {
   const books = await getBooks();
   const categories = await getCategories();
-console.log(books);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
