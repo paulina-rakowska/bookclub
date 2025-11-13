@@ -1,10 +1,6 @@
 'use client';
 
-interface PaginationProps {
-  totalPages: number;
-  currentPage: number;
-  onPageChange: (page: number) => void;
-}
+import { PaginationProps } from "./pagination.types";
 
 export function Pagination({
   totalPages,

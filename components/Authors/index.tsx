@@ -1,9 +1,8 @@
 import { AuthorI } from '@/models/author';
 import Link from "next/link";
+import type { AuthorsProps } from "./types";
 
-const Authors = (props) => {
-  const { authors } = props;
-
+const Authors = ({ authors }: AuthorsProps) => {
   return (
     <div className="min-h-screen flex flex-col">
 
@@ -35,20 +34,6 @@ const Authors = (props) => {
                 <Link key={author.id} href={`/author/${author.id}`}>
                     {author.firstName} {author.lastName}
                 </Link>
-                // <Link key={book.id} href={`/book/${book.id}`}>
-                //   {book.cover ? <Image
-                //     src={`/images/authors/${book.id}/book-300x432.webp`}
-                //     alt={book.title}
-                //     width={300}
-                //     height={432}
-                //   /> : <Image
-                //     src={`/placeholders/book-placeholder.webp`}
-                //     alt={book.title}
-                //     width={300}
-                //     height={432}
-                //   />}
-                // {book.title}
-                // </Link>
               ))}
             </div>
 

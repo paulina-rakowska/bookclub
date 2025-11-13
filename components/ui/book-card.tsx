@@ -1,24 +1,10 @@
-import { Star, Heart, MessageCircle, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import Image from 'next/image'
+import Image from 'next/image';
+import { BookCardProps } from "./book-card-types";
 
-interface Author {
-  id: string
-  firstName: string
-  lastName: string
-}
-
-interface BookCardProps {
-  id: string
-  title: string
-  author: Author[]
-  category: string
-  cover: boolean
-  description: string
-}
 
 export function BookCard({
   id,
@@ -29,7 +15,8 @@ export function BookCard({
   description,
 }: BookCardProps) {
   // Format authors as "FirstName LastName, FirstName LastName"
-  const authors= author.map(a => `${a.firstName} ${a.lastName}`).join(', ');
+  const authors= author?.map(a => `${a.firstName} ${a.lastName}`).join(', ');
+
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
       <Link key={id} href={`/book/${id}`} className="relative">

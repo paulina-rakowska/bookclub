@@ -6,14 +6,9 @@ import { useQuery } from "@apollo/client/react";
 import { BookCard } from '@/components/ui/book-card';
 import { Button } from '@/components/ui/button';
 import BOOKS_QUERY from '@/queries/booksQuery';
-import { CategoryI } from '@/models/category';
 import { BookI } from '@/models/book';
 import { BookFilters } from '../ui/book-filters';
-
-interface BooksProps {
-  initialBooks: BookI[];
-  categories: CategoryI[];
-}
+import { BooksProps } from './types';
 
 export default function Books({ initialBooks, categories }: BooksProps) {
   const [currentPage, setCurrentPage] = useState(1);

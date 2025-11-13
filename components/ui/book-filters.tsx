@@ -1,22 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { X } from "lucide-react";
 import { CategoryI } from "@/models/category";
+import { BookFiltersProps } from "./book-filter-types";
 
 const sortOptions = [
-  { value: "popular", label: "Most Popular" },
   { value: "rating", label: "Highest Rated" },
   { value: "newest", label: "Newest" },
   { value: "title", label: "Title A-Z" },
-  { value: "author", label: "Author A-Z" },
+  { value: "title", label: "Title Z-A" },
 ];
-
-interface BookFiltersProps {
-  selectedCategory: string;
-  onCategoryChange: (category: string) => void;
-  categories: CategoryI[];
-}
 
 export function BookFilters({
   selectedCategory,
@@ -44,8 +36,8 @@ export function BookFilters({
                 variant="filter"
                 size="filter"
                 className="w-full"
-                data-active={selectedCategory === category.id}
-                onClick={() => onCategoryChange(category.id)}
+                data-active={selectedCategory === String(category.id)}
+                onClick={() => onCategoryChange(category.id ? String(category.id) : null)}
               >
                 {category.name}
               </Button>
