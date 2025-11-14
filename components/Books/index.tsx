@@ -9,6 +9,7 @@ import BOOKS_QUERY from '@/queries/booksQuery';
 import { BookI } from '@/models/book';
 import { BookFilters } from '../ui/book-filters';
 import { BooksProps } from './types';
+import { BookCardProps } from '../ui/book-card-types';
 
 export default function Books({ initialBooks, categories }: BooksProps) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -60,7 +61,7 @@ export default function Books({ initialBooks, categories }: BooksProps) {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {books && books.map((book: BookI) => (
+              {books && books.map((book: BookCardProps) => (
                 <BookCard key={book.id} {...book} />
               ))}
             </div>

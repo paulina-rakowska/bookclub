@@ -2,6 +2,8 @@
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import Books from '@/components/Books';
+import BOOKS_QUERY from '@/queries/booksQuery';
+import { print } from 'graphql';
 
 async function getBooks() {
   const res = await fetch('http://localhost:3000/api/graphql', {
