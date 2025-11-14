@@ -58,8 +58,8 @@ export default function HeroSlider({ slides, currentSlide, prevSlide, nextSlide,
                 </div>
 
                 {/* Navigation Arrows */}
-<div
-  className="
+                <div
+                    className="
     absolute left-1/2 -translate-x-1/2 top-[42%] md:top-[45%] 
     w-full px-2 sm:px-4 -translate-y-1/2 z-40
     max-w-full
@@ -70,7 +70,7 @@ export default function HeroSlider({ slides, currentSlide, prevSlide, nextSlide,
     [@media(width>=96rem)]:max-w-[96rem]
     flex justify-between
   "
->
+                >
                     <button
                         onClick={handlePrevSlide}
                         className="bg-white/30 hover:bg-white/50 text-white p-2 rounded-full transition-all duration-300 border border-white"

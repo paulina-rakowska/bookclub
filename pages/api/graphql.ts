@@ -1,20 +1,30 @@
-import { ApolloServer } from '@apollo/server';
-import { startServerAndCreateNextHandler } from '@as-integrations/next';
+import { ApolloServer } from 'apollo-server-micro';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { typeDefs } from '@/graphql/schema';
 import { resolvers } from '@/graphql/resolvers';
 import dbConnect from '@/lib/mongoose';
 
-const server = new ApolloServer({
+const apolloServer = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
-const handler = startServerAndCreateNextHandler(server);
+const startServer = apolloServer.start();
 
-const nextHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  await dbConnect(); 
-  return handler(req, res);
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  await dbConnect();
+  await startServer;
+
+  return apolloServer.createHandler({
+    path: '/api/graphql',
+  })(req, res);
+}
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
-
-export default nextHandler;
