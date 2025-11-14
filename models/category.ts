@@ -1,3 +1,4 @@
+import type { Model } from "mongoose";
 import { Schema, model, models } from 'mongoose';
 
 export type ID = string | number;

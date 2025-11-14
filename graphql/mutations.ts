@@ -39,3 +39,17 @@ export const ADD_CATEGORY = gql`
 		}
 	}
 `;
+
+export const ADD_SLIDE = gql`
+	mutation AddSlide($title: String!, $subtitle: String, $description: String, $linkText: String!, $linkHref: String!, $image: String!) {
+		addSlide(title: $title, subtitle: $subtitle, description: $description, linkText: $linkText, linkHref: $linkHref, image: $image) {
+			id
+			title
+			subtitle
+			description
+			linkText
+			linkHref
+			image
+		}
+	}
+`;

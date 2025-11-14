@@ -6,35 +6,18 @@ import CategoryModel, { CategoryI } from "@/models/category";
 
 export const resolvers = {
   Query: {
-    books: async () => {
-      return await BookModel.getBooks();
-    },
-    book: async (_: Promise<BookI | null>, { id }: { id: ID }) => {
-      const book = await BookModel.getBookById(id);
-      if (!book) throw new Error("Book not found");
-      await book.populate("author");
-      await book.populate("category");
-      console.log("in resolvers");
-      console.log(book);
-      return book as BookI;
-    },
-    authors: async () => {
-      return await AuthorModel.getAuthors();
-    },
-    author: async (_: Promise<AuthorI | null>, { id }: { id: ID }) => {
-      const author = await AuthorModel.getAuthorById(id);
-      console.log("in author");
-      console.log(author);
-      return author as AuthorI;
-    },
+    books: () => BookModel.getBooks(),
+    book: (_: Promise<BookI | null>, { id }: { id: ID }) =>
+      BookModel.getBookById(id),
+    authors: () => AuthorModel.getAuthors(),
+    author: (_: Promise<AuthorI | null>, { id }: { id: ID }) => 
+      AuthorModel.getAuthorById(id),
     categories: async () => {
       return await CategoryModel.getCategories();
     },
     category: async (_: Promise<CategoryI | null>, { id }: { id: ID }) => {
       const category = await CategoryModel.getCategoryById(id);
       if (!category) throw new Error("Category not found");
-      console.log("in resolvers");
-      console.log(category);
       return category as CategoryI;
     },
   },

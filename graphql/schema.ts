@@ -21,6 +21,15 @@ export const typeDefs = gql`#graphql
     id: ID!
     name: String!
   }
+  type Slide {
+    id: ID!
+    title: String!
+    subtitle: String
+    description: String
+    linkText: String!
+    linkHref: String!
+    image: String!
+  }
 
   type Query {
     books: [Book]
@@ -29,12 +38,14 @@ export const typeDefs = gql`#graphql
     author(id: ID!): Author
     categories: [Category]
     category(id: ID!): Category
+    slides: [Slide]
   }
 
   type Mutation {
     addAuthor(firstName: String!, lastName: String!): Author!
     addBook(title: String!, description: String, cover: Boolean!, authorIds: [ID!]!, categoryIds: [ID]): Book!
     addCategory(name: String!): Category!
+    addSlide(title: String!, subtitle: String, description: String, linkText: String!, linkHref: String!, image: String!): Slide!
     updateBookCover(id: ID!, cover: Boolean!): Book!  
     updateBookCategory(id: ID!, categoryId: ID!): Book! 
   }

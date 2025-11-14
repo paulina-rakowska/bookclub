@@ -1,12 +1,16 @@
+import type { Model } from "mongoose";
 import { Schema, model, models} from 'mongoose';
 import { BookI, ID } from './book';
-
 
 export interface AuthorI {
   id?: ID;
   firstName: string,
   lastName: string,
   books: BookI[]
+}
+interface AuthorModelType extends Model<AuthorI> {
+  getAuthorById(id: ID): Promise<AuthorI>;
+  getAuthors(): Promise<AuthorI[]>;
 }
 
 const AuthorSchema = new Schema<AuthorI>({
@@ -37,6 +41,6 @@ AuthorSchema.statics.getAuthors = async function(): Promise<AuthorI[]> {
   }
 }
 
-const AuthorModel = (models.Author || model<AuthorI>('Author', AuthorSchema));
+const AuthorModel = (models.Author as AuthorModelType) || model<AuthorI, AuthorModelType>('Author', AuthorSchema);
 
 export default AuthorModel;

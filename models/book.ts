@@ -1,3 +1,4 @@
+import type { Model } from "mongoose";
 import { Schema, model, models } from "mongoose";
 import { AuthorI } from "./author";
 import AuthorModel from "@/models/author";
@@ -13,6 +14,19 @@ export interface BookI {
   author: AuthorI[];
   category: CategoryI[];
 }
+
+interface BookModelType extends Model<BookI> {
+  getBooks(): Promise<BookI[]>;
+  getBookById(id: ID): Promise<BookI>;
+  addBook(
+    title: string,
+    description: string,
+    cover: boolean,
+    authorIds: [ID],
+    categoryIds: [ID]
+  ): Promise<BookI>;
+}
+
 
 const BookSchema = new Schema<BookI>({
   title: { type: String, required: true },
@@ -34,6 +48,7 @@ BookSchema.statics.getBooks = async function (): Promise<BookI[]> {
 BookSchema.statics.getBookById = async function (id: ID): Promise<BookI> {
   try {
     const data = await this.findById(id).populate("author").populate("category");
+    if (!data) throw new Error("Book not found");
     return data as BookI;
   } catch (err) {
     throw new Error("Failed to get books");
@@ -87,6 +102,7 @@ BookSchema.statics.addBook = async function (
   return book as BookI;
 };
 
-const BookModel = models.Book || model<BookI>("Book", BookSchema);
+const BookModel =
+  (models.Book as BookModelType) || model<BookI, BookModelType>("Book", BookSchema);
 
 export default BookModel;

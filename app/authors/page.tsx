@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/client/react";
 import AUTHORS_QUERY from "../../queries/authorsQuery";
 
 import Authors from "@/components/Authors";
+import { AuthorI } from "@/models/author";
 
 function AuthorsPage() {
   const { loading, error, data } = useQuery(AUTHORS_QUERY);
@@ -14,7 +15,7 @@ function AuthorsPage() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const { authors } = data;
+  const { authors } : { authors: AuthorI[] } = data;
 
   return (
     <div className="w-full">
