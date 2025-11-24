@@ -4,31 +4,14 @@ import Footer from '@/components/shared/Footer';
 import Books from '@/components/Books';
 import BOOKS_QUERY from '@/queries/booksQuery';
 import { print } from 'graphql';
+import CATEGORIES_QUERY from '@/queries/categoriesQuery';
 
 async function getBooks() {
   const res = await fetch('http://localhost:3000/api/graphql', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      query: `
-        query GetBooks {
-          books {
-            id
-            title
-            description
-            cover
-            author {
-              id
-              firstName
-              lastName
-            }
-            category {
-              id
-              name
-            }
-          }
-        }
-      `
+      query: print(BOOKS_QUERY),
     }),
     cache: 'no-store', // or 'force-cache' for static generation
   });
@@ -42,14 +25,7 @@ async function getCategories() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      query: `
-            query GetCategories {
-              categories {
-                id
-                name
-              }
-            }
-      `
+      query: print(CATEGORIES_QUERY)
     }),
     cache: 'no-store', // or 'force-cache' for static generation
   });
