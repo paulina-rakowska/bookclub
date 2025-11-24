@@ -1,25 +1,32 @@
-"use client"; // Required for client-side components
-
 import Header from "../../../components/shared/Header";
 import Footer from "../../../components/shared/Footer";
 
-import { useParams } from "next/navigation";
-import { useQuery } from "@apollo/client/react";
 import AUTHOR_QUERY from "@/queries/authorQuery";
+import { AuthorI } from "@/models/author";
+import { print } from "graphql";
 
-function AuthorPage() {
-  const { id: authorId } = useParams();
-console.log(authorId);
-  const { loading, error, data } = useQuery(AUTHOR_QUERY, {
-    variables: { id: authorId },
-    skip: !authorId,
+async function fetchAuthor(id: string): Promise<AuthorI | null> {
+  const res = await fetch('http://localhost:3000/api/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: print(AUTHOR_QUERY),
+      variables: { id },
+    }),
+    cache: 'no-store',
   });
-console.log(data);
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-console.log(data);
-  const { author } = data;
 
+  const { data } = await res.json();
+  return data?.author ?? null;
+}
+
+
+async function AuthorPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: authorId } = await params;
+  console.log(authorId);
+  const author = await fetchAuthor(authorId);
+
+  if (!author) return <div>Author not found</div>;
   return (
     <div className="w-full">
       <Header />

@@ -3,8 +3,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { BookI } from '@/models/book';
+import { AuthorI } from '@/models/author';
+import Link from 'next/link';
 
-export default function Book({ id, title, author, description, cover, category }: { book: BookI }) {
+export default function Book({ id, title, author, description, cover, category }: BookI) {
     const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
     return (
@@ -49,7 +51,13 @@ export default function Book({ id, title, author, description, cover, category }
                         {/* Header section */}
                         <div>
                             <h1 className="text-4xl font-bold mb-2 text-balance">{title}</h1>
-                            <p className="text-lg text-muted-foreground mb-4">by {author.firstName} {author.lastName}</p>
+                            <p className="text-lg text-muted-foreground mb-4">by
+                                {author.map((au: AuthorI) => (
+                                    <Link key={au.id} href={`/author/${au.id}`}>
+                                        {au.firstName} {au.lastName}
+                                    </Link>
+                                ))}
+                            </p>
                         </div>
 
                         {/* Description */}
@@ -66,7 +74,7 @@ export default function Book({ id, title, author, description, cover, category }
                             </div>
                             <div>
                                 <p className="text-sm text-muted-foreground mb-1">Publisher</p>
-             {/* {               <p className="font-semibold">{publisher}</p>} */}
+                                {/* {               <p className="font-semibold">{publisher}</p>} */}
                             </div>
                         </div>
                     </div>

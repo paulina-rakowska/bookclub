@@ -16,16 +16,17 @@ export default function Books({ initialBooks, categories }: BooksProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   // Use initial data, then fetch on interactions
-  const { data, loading } = useQuery(BOOKS_QUERY, {
+  const { data, loading } = useQuery<{ books: BookI[] }>(BOOKS_QUERY, {
     variables: { page: currentPage, limit: 12, categoryId: selectedCategory },
     // Use initial data for first render
     skip: currentPage === 1 && selectedCategory === null,
   });
 
-  const booksData = (currentPage === 1 && selectedCategory === null) 
-    ? initialBooks 
-    : data?.books;
-  
+  const booksData =
+    currentPage === 1 && selectedCategory === null
+      ? initialBooks
+      : data?.books ?? [];
+  console.log(initialBooks);
   // Calculate totalPages - you may need to adjust this based on your API response
   // For now, using a fixed value or calculating from data length
   const totalPages = 5; // TODO: Get this from API response
@@ -61,7 +62,7 @@ export default function Books({ initialBooks, categories }: BooksProps) {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {books && books.map((book: BookCardProps) => (
+              {books && books.map((book: BookI) => (
                 <BookCard key={book.id} {...book} />
               ))}
             </div>

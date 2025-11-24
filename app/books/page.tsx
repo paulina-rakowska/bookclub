@@ -51,7 +51,7 @@ async function getCategories() {
             }
       `
     }),
-    cache: 'force-cache', // or 'force-cache' for static generation
+    cache: 'no-store', // or 'force-cache' for static generation
   });
 
   const { data } = await res.json();
@@ -62,7 +62,7 @@ async function getCategories() {
 export default async function BooksPage() {
   const books = await getBooks();
   const categories = await getCategories();
-
+console.log("in books page", books);
   return (
     <div className="min-h-screen flex flex-col">
       <Header />

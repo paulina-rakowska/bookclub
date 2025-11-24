@@ -8,6 +8,12 @@ export interface CategoryI {
   name: string;
 }
 
+interface CategoryModelType extends Model<CategoryI> {
+    getCategories(): Promise<CategoryI[]>
+    getCategoryById(id: ID): Promise<CategoryI>;
+    addCategory(name: string): Promise<CategoryI>;   
+}
+
 const CategorySchema = new Schema<CategoryI>({
   name:{ type: String, required: true },
 });
@@ -41,7 +47,8 @@ CategorySchema.statics.addCategory = async function(name: string): Promise<Categ
 
 }
 
-const CategoryModel = models.Category || model<CategoryI>('Category', CategorySchema);
+const CategoryModel =
+  (models.Category as CategoryModelType) || model<CategoryI, CategoryModelType>("Category", CategorySchema);
 
 
 export default CategoryModel;

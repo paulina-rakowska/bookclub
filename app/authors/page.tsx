@@ -3,19 +3,30 @@
 import Header from "../../components/shared/Header";
 import Footer from "../../components/shared/Footer";
 
-import { useQuery } from "@apollo/client/react";
 import AUTHORS_QUERY from "../../queries/authorsQuery";
+import { print } from "graphql";
 
 import Authors from "@/components/Authors";
 import { AuthorI } from "@/models/author";
 
-function AuthorsPage() {
-  const { loading, error, data } = useQuery(AUTHORS_QUERY);
+async function fetchAuthors(): Promise<AuthorI[] | null> {
+  const res = await fetch('http://localhost:3000/api/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: print(AUTHORS_QUERY),
+    }),
+    cache: 'no-store',
+  });
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const { data } = await res.json();
+  return data?.authors ?? null;
+}
 
-  const { authors } : { authors: AuthorI[] } = data;
+async function AuthorsPage() {
+  const authors = await fetchAuthors();
+
+  if (!authors) return;
 
   return (
     <div className="w-full">

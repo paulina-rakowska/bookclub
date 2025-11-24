@@ -6,36 +6,34 @@ if (!MONGO_URI) {
   throw new Error('You must provide a Mongo Atlas URI');
 }
 
-declare global {
-  let mongoose: {
+const globalWithMongoose = global as typeof globalThis & {
+  mongoose?: {
     conn: typeof mongoose | null;
     promise: Promise<typeof mongoose> | null;
   };
-}
+};
 
-let cached = global.mongoose;
+let cached = globalWithMongoose.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = globalWithMongoose.mongoose = { conn: null, promise: null };
 }
 
 async function dbConnect() {
-  if (cached.conn) {
-    return cached.conn;
+  if (cached!.conn) {
+    return cached!.conn;
   }
 
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
+  if (!cached!.promise) {
+    const opts = { bufferCommands: false };
 
-    cached.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
+    cached!.promise = mongoose.connect(MONGO_URI, opts).then((mongoose) => {
       return mongoose;
     });
   }
 
-  cached.conn = await cached.promise;
-  return cached.conn;
+  cached!.conn = await cached!.promise;
+  return cached!.conn;
 }
 
 export default dbConnect;

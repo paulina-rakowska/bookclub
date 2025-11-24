@@ -22,8 +22,8 @@ interface BookModelType extends Model<BookI> {
     title: string,
     description: string,
     cover: boolean,
-    authorIds: [ID],
-    categoryIds: [ID]
+    authorIds: ID[],
+    categoryIds: ID[]
   ): Promise<BookI>;
 }
 
@@ -41,7 +41,8 @@ BookSchema.statics.getBooks = async function (): Promise<BookI[]> {
     const data = await this.find({}).populate("author").populate("category");
     return data;
   } catch (err) {
-    throw new Error("Failed to get books");
+    console.error("getBooks error:", err);
+    throw err; 
   }
 };
 
@@ -51,7 +52,8 @@ BookSchema.statics.getBookById = async function (id: ID): Promise<BookI> {
     if (!data) throw new Error("Book not found");
     return data as BookI;
   } catch (err) {
-    throw new Error("Failed to get books");
+    console.error("getBookById error:", err);
+    throw err;
   }
 };
 

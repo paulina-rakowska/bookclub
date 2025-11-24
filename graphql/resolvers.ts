@@ -12,25 +12,20 @@ export const resolvers = {
     authors: () => AuthorModel.getAuthors(),
     author: (_: Promise<AuthorI | null>, { id }: { id: ID }) => 
       AuthorModel.getAuthorById(id),
-    categories: async () => {
-      return await CategoryModel.getCategories();
-    },
-    category: async (_: Promise<CategoryI | null>, { id }: { id: ID }) => {
-      const category = await CategoryModel.getCategoryById(id);
-      if (!category) throw new Error("Category not found");
-      return category as CategoryI;
-    },
+    categories: () => CategoryModel.getCategories(),
+    category: (_: Promise<CategoryI | null>, { id }: { id: ID }) => 
+      CategoryModel.getCategoryById(id),
   },
 
   Mutation: {
     addAuthor: async (
-      _parent,
+      _parent: unknown,
       { firstName, lastName }: { firstName: string; lastName: string }
     ) => {
       return await new AuthorModel({ firstName, lastName }).save();
     },
     addBook: async (
-      _parent,
+      _parent: unknown,
       {
         title,
         description,
@@ -41,8 +36,8 @@ export const resolvers = {
         title: string;
         description: string;
         cover: boolean;
-        authorIds: [ID];
-        categoryIds?: [ID];
+        authorIds: ID[];
+        categoryIds: ID[];
       }
     ) => {
       return await BookModel.addBook(
@@ -53,11 +48,11 @@ export const resolvers = {
         categoryIds
       );
     },
-    addCategory: async (_parent, { name }: { name: string }) => {
+    addCategory: async (_parent: unknown, { name }: { name: string }) => {
       return await CategoryModel.addCategory(name);
     },
     updateBookCover: async (
-      _parent,
+      _parent: unknown,
       { id, cover }: { id: ID; cover: boolean }
     ) => {
       const book = await BookModel.findByIdAndUpdate(
@@ -70,7 +65,7 @@ export const resolvers = {
       return book;
     },
     updateBookCategory: async (
-      _parent,
+      _parent: unknown,
       { id, categoryId }: { id: ID; categoryId: ID }
     ) => {
       const category = await CategoryModel.getCategoryById(categoryId);

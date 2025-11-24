@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import Image from 'next/image';
 import { BookCardProps } from "./book-card-types";
+import { BookI } from "@/models/book";
 
 
 export function BookCard({
@@ -13,7 +14,7 @@ export function BookCard({
   category,
   cover,
   description,
-}: BookCardProps) {
+}: BookI) {
   // Format authors as "FirstName LastName, FirstName LastName"
   const authors= author?.map(a => `${a.firstName} ${a.lastName}`).join(', ');
 
