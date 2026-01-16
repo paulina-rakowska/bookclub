@@ -1,19 +1,10 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import HeroSlider from '@/components/HeroSlider';
-
-interface Slide {
-  id: number
-  title: string
-  subtitle: string
-  description: string
-  linkText: string
-  linkHref: string
-  image: string
-}
+import Carousel from '@/components/Carousel';
+import { Slide } from '@/components/HeroSlider/types';
+import BOOKS_QUERY from '@/queries/booksQuery';
+import { print } from 'graphql';
 
 const slides: Slide[] = [
   {
@@ -45,41 +36,30 @@ const slides: Slide[] = [
   },
 ]
 
-export default function HomePage() {
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isAutoPlay, setIsAutoPlay] = useState(true)
+async function getNewestBooks() {
+  const res = await fetch('http://localhost:3000/api/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: print(BOOKS_QUERY),
+    }),
+    cache: 'no-store', // or 'force-cache' for static generation
+  });
 
-  useEffect(() => {
-    if (!isAutoPlay) return
+  const { data } = await res.json();
+  return data.books;
+}
 
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
-
-    return () => clearInterval(timer)
-  }, [isAutoPlay])
-
-  const goToSlide = (index: number) => {
-    setCurrentSlide(index)
-    setIsAutoPlay(false)
-  }
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
-    setIsAutoPlay(false)
-  }
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
-    setIsAutoPlay(false)
-  }
-
+export default async function HomePage() {
+  const { books: newestBooks } = await getNewestBooks();
+console.log(typeof newestBooks);
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
       
       <main className="flex-1">
-        <HeroSlider slides={slides} currentSlide={currentSlide} prevSlide={prevSlide} nextSlide={nextSlide} goToSlide={goToSlide} />
+        <HeroSlider slides={slides} />
+        {/* <Carousel carouselItems={newestBooks} /> */}
       </main>
 
       <Footer />

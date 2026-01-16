@@ -38,7 +38,7 @@ async function getCategories() {
 export default async function BooksPage() {
   const books = await getBooks();
   const categories = await getCategories();
-console.log("in books page", books);
+  console.log("in books page", books);
   return (
     <div className="min-h-screen flex flex-col">
       <Header />

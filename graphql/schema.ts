@@ -3,6 +3,7 @@ import { gql } from "apollo-server-micro";
 // that together define the "shape" of queries that are executed against
 // your data.
 export const typeDefs = gql`#graphql
+  scalar Date
   type Book {
     id: ID!
     title: String!
@@ -10,6 +11,7 @@ export const typeDefs = gql`#graphql
     cover: Boolean!
     author: [Author!]!
     category: [Category]
+    releaseDate: Date
   }
   type Author {
     id: ID!

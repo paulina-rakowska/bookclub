@@ -1,16 +1,37 @@
-import { HeroSliderProps, Slide } from './types';
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+'use client';
+
+import { HeroSliderProps } from './types';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 
-export default function HeroSlider({ slides, currentSlide, prevSlide, nextSlide, goToSlide }: HeroSliderProps) {
-    const handlePrevSlide = () => {
-        prevSlide();
+export default function HeroSlider({ slides }: HeroSliderProps) {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [isAutoPlay, setIsAutoPlay] = useState(true);
+
+    useEffect(() => {
+        if (!isAutoPlay) return;
+
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % slides.length)
+        }, 5000)
+
+        return () => clearInterval(timer)
+    }, [isAutoPlay, slides?.length ]);
+
+    const goToSlide = (index: number) => {
+        setCurrentSlide(index)
+        setIsAutoPlay(false)
     }
-    const handleNextSlide = () => {
-        nextSlide();
+
+    const nextSlide = () => {
+        setCurrentSlide((prev) => (prev + 1) % slides.length)
+        setIsAutoPlay(false)
     }
-    const handleGoToSlide = (index: number) => {
-        goToSlide(index);
+
+    const prevSlide = () => {
+        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+        setIsAutoPlay(false)
     }
 
     return (
@@ -72,7 +93,7 @@ export default function HeroSlider({ slides, currentSlide, prevSlide, nextSlide,
   "
                 >
                     <button
-                        onClick={handlePrevSlide}
+                        onClick={prevSlide}
                         className="bg-white/30 hover:bg-white/50 text-white p-2 rounded-full transition-all duration-300 border border-white"
                         aria-label="Previous slide"
                     >
@@ -80,7 +101,7 @@ export default function HeroSlider({ slides, currentSlide, prevSlide, nextSlide,
                     </button>
 
                     <button
-                        onClick={handleNextSlide}
+                        onClick={nextSlide}
                         className="bg-white/30 hover:bg-white/50 text-white p-2 rounded-full transition-all duration-300 border border-white"
                         aria-label="Next slide"
                     >
@@ -95,7 +116,7 @@ export default function HeroSlider({ slides, currentSlide, prevSlide, nextSlide,
                         {slides.map((_, index) => (
                             <button
                                 key={index}
-                                onClick={() => handleGoToSlide(index)}
+                                onClick={() => goToSlide(index)}
                                 className={`w-3 h-3 rounded-full transition-all duration-300 flex items-center justify-center font-semibold text-xs sm:text-sm ${index === currentSlide
                                     ? 'bg-white text-primary ring-white scale-125'
                                     : 'bg-white/50 text-white hover:bg-white/70'

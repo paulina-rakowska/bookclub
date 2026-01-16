@@ -26,7 +26,7 @@ export default function Books({ initialBooks, categories }: BooksProps) {
     currentPage === 1 && selectedCategory === null
       ? initialBooks
       : data?.books ?? [];
-  console.log(initialBooks);
+
   // Calculate totalPages - you may need to adjust this based on your API response
   // For now, using a fixed value or calculating from data length
   const totalPages = 5; // TODO: Get this from API response

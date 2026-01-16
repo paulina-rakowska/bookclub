@@ -9,8 +9,4 @@ export interface Slide {
 }
 export interface HeroSliderProps {
   slides: Slide[];  
-  currentSlide: number;
-  prevSlide: () => void;
-  nextSlide: () => void;
-  goToSlide: (index: number) => void;
 }

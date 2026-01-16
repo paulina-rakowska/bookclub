@@ -3,6 +3,7 @@ import Footer from '../../../components/shared/Footer';
 import Book from '@/components/Book';
 import BOOK_QUERY from '@/queries/bookQuery';
 import { print } from 'graphql';
+import '@/components/Book/book.css';
 
 async function getBookById(id: string) {
   const res = await fetch('http://localhost:3000/api/graphql', {
@@ -23,7 +24,7 @@ async function BookPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const book = await getBookById(id);
-  console.log(book);
+
   if(!book){
     return <div>Book not found</div>
   }

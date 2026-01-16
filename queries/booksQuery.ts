@@ -7,6 +7,7 @@ const BOOKS_QUERY = gql`
       title
       description
       cover
+      releaseDate
       author {
         id
         firstName

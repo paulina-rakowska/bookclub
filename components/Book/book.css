@@ -1,0 +1,6 @@
+.bar-tile {
+    border-right: 1px solid#e0d8d0;
+}
+.bar-tile:last-child {
+    border-right: 0 none;
+}

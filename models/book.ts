@@ -13,6 +13,7 @@ export interface BookI {
   cover: boolean;
   author: AuthorI[];
   category: CategoryI[];
+  releaseDate: Date;
 }
 
 interface BookModelType extends Model<BookI> {
