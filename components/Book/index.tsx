@@ -14,6 +14,7 @@ export default function Book({
   description,
   cover,
   category,
+  publisher,
   releaseDate
 }: BookI) {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);

@@ -59,7 +59,7 @@ console.log(typeof newestBooks);
       
       <main className="flex-1">
         <HeroSlider slides={slides} />
-        {/* <Carousel carouselItems={newestBooks} /> */}
+        <Carousel carouselItems={newestBooks} />
       </main>
 
       <Footer />

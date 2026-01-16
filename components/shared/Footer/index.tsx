@@ -81,7 +81,7 @@ const Footer = () => {
       </div>
       <div className="container px-4 mx-auto">
         <p className="py-[2px]0 md:pb-10 text-xs text-white text-shadow-lg/30 font-medium text-center">
-          © {year | 2025} BookClub. All rights reserved.
+          © {year} BookClub. All rights reserved.
         </p>
       </div>
     </footer>
