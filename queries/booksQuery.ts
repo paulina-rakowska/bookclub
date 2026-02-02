@@ -1,12 +1,12 @@
 import { gql } from "@apollo/client";
 
 const BOOKS_QUERY = gql`
-  query GetBooks {
-    books {
+  query GetBooks($limit: Int, $offset: Int) {
+    books (limit: $limit, offset: $offset) {
       id
       title
       description
-      cover
+      coverUrl
       releaseDate
       author {
         id

@@ -5,19 +5,27 @@ import Books from '@/components/Books';
 import BOOKS_QUERY from '@/queries/booksQuery';
 import { print } from 'graphql';
 import CATEGORIES_QUERY from '@/queries/categoriesQuery';
+import { BOOKS_PER_PAGE } from '@/utils/constants';
 
-async function getBooks() {
+async function getBooks(limit: number, offset: number = 0) {
   const res = await fetch('http://localhost:3000/api/graphql', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       query: print(BOOKS_QUERY),
+      variables: {limit, offset}
     }),
     cache: 'no-store', // or 'force-cache' for static generation
   });
 
   const { data } = await res.json();
-  return data.books;
+  const fetchedBooks = data?.books;
+  const all = fetchedBooks?.length || 0;
+
+  return {
+    books: fetchedBooks,
+    all: all
+  };
 }
 
 async function getCategories() {
@@ -36,14 +44,14 @@ async function getCategories() {
 
 
 export default async function BooksPage() {
-  const books = await getBooks();
+  const { books, all } = await getBooks();
   const categories = await getCategories();
-  console.log("in books page", books);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1 container mx-auto px-4 py-8">
-        <Books initialBooks={books} categories={categories} />
+        <Books initialBooks={books} categories={categories} all={all} />
       </main>
       <Footer />
     </div>

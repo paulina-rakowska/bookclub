@@ -1,4 +1,4 @@
-
+'use client';
 
 import { Search, Menu, BookOpenText } from "lucide-react"
 import Link from "next/link";
@@ -6,9 +6,14 @@ import Image from 'next/image';
 import "./header.css";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import WindowModal from '@/components/ui/modal';
+import { useState } from "react";
 
 const Header = () => {
-    return (
+  const [ open, setOpen ] = useState(false);
+  const handleOpenClose = () => setOpen((prev: boolean) => !prev);
+
+    return (<>
     <header className="bg-primary text-primary-foreground shadow-sm">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
@@ -52,7 +57,8 @@ const Header = () => {
                 </a>
               </li>
               <li>
-                <Button variant="secondary" size="sm" className="bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 h-8">
+                <Button variant="secondary" size="sm" className="registration-button bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 h-8" 
+                onClick={handleOpenClose}>
                   Sign Up
                 </Button>
               </li>
@@ -78,6 +84,8 @@ const Header = () => {
         </div>
       </div>
     </header>
+    <WindowModal open={open} onClose={() => handleOpenClose()} className={"registrationModal"}>Registration Form</WindowModal>
+    </>
     );
 }
 

@@ -12,7 +12,7 @@ export default function Book({
   title,
   author,
   description,
-  cover,
+  coverUrl,
   category,
   publisher,
   releaseDate
@@ -22,7 +22,7 @@ export default function Book({
   return (
     <>
       {/* Main content */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12">
+      <div key={id} className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-12">
         {/* Book Cover and Actions */}
         <div className="md:col-span-1">
           <div className="sticky top-4">
@@ -33,8 +33,8 @@ export default function Book({
             >
               <Image
                 src={
-                  cover
-                    ? `/images/books/${id}/book-300x432.webp`
+                  coverUrl
+                    ? coverUrl
                     : "/placeholders/book-placeholder.webp"
                 }
                 width={300}
@@ -72,9 +72,9 @@ export default function Book({
               <h1 className="text-4xl font-bold mb-2 text-balance">{title}</h1>
               <p className="text-lg text-muted-foreground mb-4">
                 by&nbsp;
-                {author.map((au: AuthorI) => (
+                {author.map((au: AuthorI, i) => (
                   <Link key={au.id} href={`/author/${au.id}`}>
-                    {au.firstName} {au.lastName}
+                    {au.firstName} {au.lastName}{i < author.length-1? ", ": ""}
                   </Link>
                 ))}
               </p>
@@ -89,16 +89,24 @@ export default function Book({
             {/* Book Info Grid */}
             <div className="grid grid-cols-2 gap-4 px-4 bg-muted rounded-lg">
               <div className="bar-tile py-4">
-                <p className="text-sm text-muted-foreground mb-1">Categories</p>
-                <p className="font-semibold">
-                    {category.map((cat: CategoryI) => 
-                        (cat.name)
+                <p className="text-sm text-muted-foreground font-semibold mb-1">Categories</p>
+                <p className="">
+                    {category?.map((cat: CategoryI) => 
+                        (<span key={cat.id}>{cat.name} </span>)
                     )}
                 </p>
               </div>
               <div className="bar-tile py-4">
-                <p className="text-sm text-muted-foreground mb-1">Release date</p>
-                <p className="font-semibold">{releaseDate}</p>
+                <p className="text-sm text-muted-foreground font-semibold mb-1">Release date</p>
+                <p className="">{releaseDate.toString()}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 px-4 rounded-lg">
+                <div className="bar-tile py-4">
+                <p className="text-sm text-muted-foreground font-semibold mb-1">Publisher:</p>
+                <p className="">
+                    {publisher?.name}
+                </p>
               </div>
             </div>
           </div>
@@ -115,8 +123,8 @@ export default function Book({
           >
             <Image
               src={
-                cover
-                  ? `/images/books/${id}/book-300x432.webp`
+                coverUrl
+                  ? coverUrl
                   : "/placeholders/book-placeholder.webp"
               }
               alt={`${title} cover big`}

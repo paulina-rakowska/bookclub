@@ -6,6 +6,7 @@ export interface AuthorI {
   id?: ID;
   firstName: string,
   lastName: string,
+  biography: string,
   books: BookI[]
 }
 interface AuthorModelType extends Model<AuthorI> {
@@ -16,6 +17,7 @@ interface AuthorModelType extends Model<AuthorI> {
 const AuthorSchema = new Schema<AuthorI>({
   firstName: { type: String, required: true },
   lastName:  { type: String, required: true },
+  biography: { type: String, required: false },
   books: [{ type: Schema.Types.ObjectId, ref: 'Book' }]!
 });
 

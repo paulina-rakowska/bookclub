@@ -1,9 +1,10 @@
+// app/homepage/page.tsx (Server Component)
 import Header from '@/components/shared/Header';
 import Footer from '@/components/shared/Footer';
 import HeroSlider from '@/components/HeroSlider';
 import Carousel from '@/components/Carousel';
 import { Slide } from '@/components/HeroSlider/types';
-import BOOKS_QUERY from '@/queries/booksQuery';
+import NEWEST_QUERY from '@/queries/newestBooksQuery';
 import { print } from 'graphql';
 
 const slides: Slide[] = [
@@ -41,25 +42,25 @@ async function getNewestBooks() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      query: print(BOOKS_QUERY),
+      query: print(NEWEST_QUERY),
     }),
     cache: 'no-store', // or 'force-cache' for static generation
   });
 
   const { data } = await res.json();
-  return data.books;
+  return data?.books;
 }
 
 export default async function HomePage() {
-  const { books: newestBooks } = await getNewestBooks();
-console.log(typeof newestBooks);
+  const data = await getNewestBooks();
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
       
       <main className="flex-1">
         <HeroSlider slides={slides} />
-        <Carousel carouselItems={newestBooks} />
+        {/* <Carousel carouselItems={newestBooks} /> */}
       </main>
 
       <Footer />

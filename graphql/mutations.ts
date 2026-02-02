@@ -1,29 +1,37 @@
 import { gql } from "@apollo/client";
 
 export const ADD_BOOK = gql`
-	mutation AddBook($title: String!, $description: String, $cover: Boolean!, $authorIds: [ID!]!, $categoryIds: [ID]) {
-		addBook(title: $title, description: $description, cover: $cover, authorIds: $authorIds, categoryIds: $categoryIds) {
+	mutation AddBook($title: String!, $description: String, $coverUrl: String, $releaseDate: Date, $authorIds: [ID!]!, $categoryIds: [ID], $publisherId: ID!) {
+		addBook(title: $title, description: $description, coverUrl: $coverUrl, releaseDate: $releaseDate, authorIds: $authorIds, categoryIds: $categoryIds, publisherId: $publisherId) {
 			title
-      description
+      		description
+			coverUrl
+			releaseDate
 			author {
 				id
 				firstName
-        lastName
+        		lastName
 			}
 			category {
 				id
 				name
+			}
+			publisher {
+				id
+				name
+				description
 			}
 		}
 	}
 `;
 
 export const ADD_AUTHOR = gql`
-	mutation AddAuthor($firstName: String, $lastName: String) {
-		addAuthor(firstName: $firstName, lastName: $lastName) {
+	mutation AddAuthor($firstName: String!, $lastName: String!, $biography: String) {
+		addAuthor(firstName: $firstName, lastName: $lastName, biography: $biography) {
 			id
 			firstName
             lastName
+			biography
 			books {
 			  id
 			}
@@ -53,3 +61,13 @@ export const ADD_SLIDE = gql`
 		}
 	}
 `;
+
+export const ADD_PUBLISHER = gql`
+	mutation AddPublisher($name: String!, $description: String) {
+		addPublisher(name: $name, description: $description) {
+			id
+			name
+			description
+		}
+	}
+`

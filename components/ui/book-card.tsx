@@ -11,7 +11,7 @@ export function BookCard({
   title,
   author,
   category,
-  cover,
+  coverUrl,
   description,
 }: BookCardProps) {
   // Format authors as "FirstName LastName, FirstName LastName"
@@ -22,7 +22,7 @@ export function BookCard({
       <Link key={id} href={`/book/${id}`} className="relative">
         <div className="p-4 aspect-[3/4] overflow-hidden">
           <Image
-                src={cover?  `/images/books/${id}/book-300x432.webp` : "/placeholders/book-placeholder.webp"}
+                src={coverUrl !=="" ? coverUrl : "/placeholders/book-placeholder.webp"}
                 alt={`${title} cover`}
                 width={300}
                 height={432}

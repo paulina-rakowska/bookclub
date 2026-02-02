@@ -4,33 +4,43 @@ import BookModel from "@/models/book";
 import AuthorModel from "@/models/author";
 import CategoryModel, { CategoryI } from "@/models/category";
 import { GraphQLScalarType, Kind } from "graphql";
+import PublisherModel, { PublisherI } from "@/models/publisher";
 
 const dateScalar = new GraphQLScalarType({
   name: "Date",
-  description: "Date Custom Scalar Type",
+  description: "Date Custom Scalar Type (YYYY-MM-DD)",
   //from server to client
   serialize(value) {
     if(value instanceof Date) {
-      return value.toISOString();
+      return value?.toISOString()?.split('T')[0]
     }
+    throw new Error('Date serialize error: value is not a Date instance');
   },
-  //from client to server
+  //from client to server (variables)
   parseValue(value:unknown) {
-    if(typeof value === 'string' || typeof value === 'number') {
-      const date = new Date(value);
-      if(isNaN(date.getTime())) {
-        throw new Error('Invalid date format');
+    if(typeof value === 'string') {
+      //Validate format YYYY-MM-DD
+      if(! /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        throw new Error('Invalid date format. Expected YYYY-MM-DD');
       }
-      return date;
+      const date = new Date(value + 'T00:00:00.000Z');
+      if(isNaN(date.getTime())) {
+        throw new Error('Invalid date value.');
+      } 
+      return date; // Return Date object
     }
-    throw new Error('Date must be a string or number');
+    throw new Error('Date must be a string in YYYY-MM-DD format');
   },
   //from client inline query
   parseLiteral(ast) {
-    if(ast.kind == Kind.STRING || ast.kind == Kind.INT) {
-      return new Date(ast.value);
+    if(ast.kind == Kind.STRING) {
+      const date = new Date(ast.value + 'T00:00:00.000Z');
+      if(isNaN(date.getTime())){
+        throw new Error("Invalid date format. Expected YYYY-MM-DD");
+      }
+      return date; // Return Date object
     }
-    return null;
+    return new Error("Date literal must be a string in YYYY-MM-DD format");
   },
 
 });
@@ -38,7 +48,9 @@ const dateScalar = new GraphQLScalarType({
 export const resolvers = {
   Date: dateScalar,
   Query: {
-    books: () => BookModel.getBooks(),
+    books: (_: Promise<BookI[] | []>, { limit, offset, sort }: { limit: number, offset: number, sort: string }) => {
+      return BookModel.getBooks(limit, offset)
+    },
     book: (_: Promise<BookI | null>, { id }: { id: ID }) =>
       BookModel.getBookById(id),
     authors: () => AuthorModel.getAuthors(),
@@ -47,49 +59,60 @@ export const resolvers = {
     categories: () => CategoryModel.getCategories(),
     category: (_: Promise<CategoryI | null>, { id }: { id: ID }) => 
       CategoryModel.getCategoryById(id),
+    publishers: () => PublisherModel.getPublishers(),
+    publisher: (_: Promise<PublisherI | null>, {id }: {id: ID}) => PublisherModel.getPublisherById(id)
   },
 
   Mutation: {
     addAuthor: async (
       _parent: unknown,
-      { firstName, lastName }: { firstName: string; lastName: string }
+      { firstName, lastName, biography }: { firstName: string; lastName: string; biography: string }
     ) => {
-      return await new AuthorModel({ firstName, lastName }).save();
+      return await new AuthorModel({ firstName, lastName, biography }).save();
     },
     addBook: async (
       _parent: unknown,
       {
         title,
         description,
-        cover,
+        coverUrl,
+        releaseDate,
         authorIds,
         categoryIds,
+        publisherId
       }: {
         title: string;
         description: string;
-        cover: boolean;
+        coverUrl: string;
+        releaseDate: Date;
         authorIds: ID[];
         categoryIds: ID[];
+        publisherId: ID;
       }
     ) => {
       return await BookModel.addBook(
         title,
         description,
-        cover,
+        coverUrl,
+        releaseDate,
         authorIds,
-        categoryIds
+        categoryIds,
+        publisherId
       );
     },
     addCategory: async (_parent: unknown, { name }: { name: string }) => {
       return await CategoryModel.addCategory(name);
     },
+    addPublisher: async (_parent: unknown, { name, description }: { name: string, description: string }) => {
+      return await PublisherModel.addPublisher(name, description)
+    },
     updateBookCover: async (
       _parent: unknown,
-      { id, cover }: { id: ID; cover: boolean }
+      { id, coverUrl }: { id: ID; coverUrl: string }
     ) => {
       const book = await BookModel.findByIdAndUpdate(
         id,
-        { cover },
+        { coverUrl },
         { new: true } // Return the updated document
       ).populate("author");
 

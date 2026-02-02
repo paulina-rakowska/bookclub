@@ -9,3 +9,6 @@
 .text-primary-foreground {
     color: var(--primary-foreground);
 }
+.registration-button {
+    cursor: pointer;
+}

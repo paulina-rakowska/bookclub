@@ -6,6 +6,7 @@ const AUTHOR_QUERY = gql`
         id
         firstName
         lastName
+        biography
         books {
             id
             title

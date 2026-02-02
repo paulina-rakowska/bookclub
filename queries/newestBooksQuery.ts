@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
-const BOOK_QUERY = gql`
-  query GetBook($id: ID!) {
-    book(id: $id) {
+const NEWEST_QUERY = gql`
+  query GetNewestBooks {
+    books (limit:10, offset: 0, sort:"releaseDate") {
       id
       title
       description
@@ -17,12 +17,8 @@ const BOOK_QUERY = gql`
         id
         name
       }
-      publisher {
-        id
-        name
-      }
     }
   }
 `;
 
-export default BOOK_QUERY;
+export default NEWEST_QUERY;

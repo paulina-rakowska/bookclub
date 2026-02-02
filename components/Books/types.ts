@@ -5,4 +5,5 @@ import { CategoryI } from "@/models/category";
 export interface BooksProps {
   initialBooks: BookI[];
   categories: CategoryI[];
+  all: number; //number of all books
 }
