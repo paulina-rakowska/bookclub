@@ -11,7 +11,8 @@
   "dependencies": {
     "@apollo/client": "^4.0.9",
     "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/joy": "^5.0.0-beta.52",
     "@mui/material": "^7.0.2",
     "@radix-ui/themes": "^3.2.1",
     "apollo-server-micro": "^3.13.0",
@@ -35,9 +36,14 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-slick": "^0.23.13",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "baseline-browser-mapping": "^2.9.19",
-    "eslint": "^9",
+    "eslint": "^9.39.2",
     "eslint-config-next": "15.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

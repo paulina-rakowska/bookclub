@@ -5,7 +5,6 @@ import Books from '@/components/Books';
 import BOOKS_QUERY from '@/queries/booksQuery';
 import { print } from 'graphql';
 import CATEGORIES_QUERY from '@/queries/categoriesQuery';
-import { BOOKS_PER_PAGE } from '@/utils/constants';
 
 async function getBooks(limit: number, offset: number = 0) {
   const res = await fetch('http://localhost:3000/api/graphql', {

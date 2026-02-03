@@ -1,34 +1,94 @@
-'use client';
+"use client";
 
-import { Search, Menu, BookOpenText } from "lucide-react"
+import { Search, Menu, BookOpenText } from "lucide-react";
 import Link from "next/link";
-import Image from 'next/image';
+import Image from "next/image";
 import "./header.css";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import WindowModal from '@/components/ui/modal';
+import WindowModal from "@/components/ui/modal";
 import { useState } from "react";
+import RegistrationForm from "@/components/Auth/RegistrationForm";
 
 const Header = () => {
-  const [ open, setOpen ] = useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpenClose = () => setOpen((prev: boolean) => !prev);
 
-    return (<>
-    <header className="bg-primary text-primary-foreground shadow-sm">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="relative">
-              <span className="w-10 h-8 bg-white rounded-lg flex items-center justify-center relative z-10">
-                <BookOpenText className="h-5 w-5 text-primary" />
+  return (
+    <>
+      <header className="bg-primary text-primary-foreground shadow-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center space-x-2">
+              <span className="relative">
+                <span className="w-10 h-8 bg-white rounded-lg flex items-center justify-center relative z-10">
+                  <BookOpenText className="h-5 w-5 text-primary" />
+                </span>
               </span>
-            </span>
-            <span className="text-xl font-bold ml-2">BookClub</span>
-          </Link>
+              <span className="text-xl font-bold ml-2">BookClub</span>
+            </Link>
 
-          {/* Search Bar - Hidden on mobile */}
-          <div className="hidden md:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
+            {/* Search Bar - Hidden on mobile */}
+            <div className="hidden md:flex flex-1 max-w-md mx-8">
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Input
+                  type="search"
+                  placeholder="Search book or author"
+                  className="pl-10 bg-background text-foreground border-border"
+                />
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <nav className="hidden md:flex items-center space-x-6">
+              <ul className="md:flex items-center space-x-6">
+                <li>
+                  <a
+                    href="/books"
+                    className="hover:text-secondary transition-colors"
+                  >
+                    Books
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/authors"
+                    className="hover:text-secondary transition-colors"
+                  >
+                    Authors
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/login"
+                    className="hover:text-secondary transition-colors"
+                  >
+                    Log In
+                  </a>
+                </li>
+                <li>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="registration-button bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 h-8"
+                    onClick={handleOpenClose}
+                  >
+                    Sign Up
+                  </Button>
+                </li>
+              </ul>
+            </nav>
+
+            {/* Mobile menu button */}
+            <Button variant="ghost" size="sm" className="md:hidden">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </div>
+
+          {/* Mobile search */}
+          <div className="md:hidden mt-4">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
                 type="search"
@@ -37,56 +97,19 @@ const Header = () => {
               />
             </div>
           </div>
-
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <ul className="md:flex items-center space-x-6">
-              <li>
-                <a href="/books" className="hover:text-secondary transition-colors">
-                  Books
-                </a>
-              </li>
-              <li>
-                <a href="/authors" className="hover:text-secondary transition-colors">
-                  Authors
-                </a>
-              </li>
-              <li>
-                <a href="/login" className="hover:text-secondary transition-colors">
-                  Log In
-                </a>
-              </li>
-              <li>
-                <Button variant="secondary" size="sm" className="registration-button bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 h-8" 
-                onClick={handleOpenClose}>
-                  Sign Up
-                </Button>
-              </li>
-            </ul>
-          </nav>
-
-          {/* Mobile menu button */}
-          <Button variant="ghost" size="sm" className="md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
         </div>
-
-        {/* Mobile search */}
-        <div className="md:hidden mt-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input
-              type="search"
-              placeholder="Search book or author"
-              className="pl-10 bg-background text-foreground border-border"
-            />
-          </div>
-        </div>
-      </div>
-    </header>
-    <WindowModal open={open} onClose={() => handleOpenClose()} className={"registrationModal"}>Registration Form</WindowModal>
+      </header>
+      <WindowModal
+        open={open}
+        onClose={() => handleOpenClose()}
+        className="registrationModal"
+        title={"Welcome to BookClub"}
+        description={"Register an account"}
+      >
+        <RegistrationForm />
+      </WindowModal>
     </>
-    );
-}
+  );
+};
 
 export default Header;
