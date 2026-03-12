@@ -3,7 +3,16 @@
 # dependencies
 /node_modules
 /.pnp
-.pnp.*
+.pnp.*paulina-rakowska
+User navigation
+Overview
+Repositories
+4
+ (4)
+Projects
+Packages
+Stars
+
 .yarn/*
 !.yarn/patches
 !.yarn/plugins

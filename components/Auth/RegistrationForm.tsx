@@ -29,7 +29,9 @@ const RegistrationForm = () => {
           required
         />
       </FormControl>
-      <Button sx={{ mt: 3, mb: 1 }}>Register</Button>
+      <button className="bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 h-8 px-3 mt-3 mb-1 rounded-md font-medium cursor-pointer">
+        Register
+      </button>
       <Typography
         endDecorator={<Link href="/login">Sign up</Link>}
         sx={{ fontSize: "sm", alignSelf: "center" }}
