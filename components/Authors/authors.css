@@ -1,0 +1,12 @@
+.searchArea {
+  background-color: var(--delicate);
+  padding: 20px 25px;
+}
+.authorTile a {
+  display: flex;
+  align-items: center;
+  justify-items: space-between;
+}
+.authorTile-image {
+  margin-right: 20px;
+}

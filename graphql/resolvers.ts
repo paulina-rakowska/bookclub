@@ -5,70 +5,96 @@ import AuthorModel from "@/models/author";
 import CategoryModel, { CategoryI } from "@/models/category";
 import { GraphQLScalarType, Kind } from "graphql";
 import PublisherModel, { PublisherI } from "@/models/publisher";
+import TopAuthors from "@/components/Authors/TopAuthors";
 
 const dateScalar = new GraphQLScalarType({
   name: "Date",
   description: "Date Custom Scalar Type (YYYY-MM-DD)",
   //from server to client
   serialize(value) {
-    if(value instanceof Date) {
-      return value?.toISOString()?.split('T')[0]
+    if (value instanceof Date) {
+      return value?.toISOString()?.split("T")[0];
     }
-    throw new Error('Date serialize error: value is not a Date instance');
+    throw new Error("Date serialize error: value is not a Date instance");
   },
   //from client to server (variables)
-  parseValue(value:unknown) {
-    if(typeof value === 'string') {
+  parseValue(value: unknown) {
+    if (typeof value === "string") {
       //Validate format YYYY-MM-DD
-      if(! /^\d{4}-\d{2}-\d{2}$/.test(value)) {
-        throw new Error('Invalid date format. Expected YYYY-MM-DD');
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        throw new Error("Invalid date format. Expected YYYY-MM-DD");
       }
-      const date = new Date(value + 'T00:00:00.000Z');
-      if(isNaN(date.getTime())) {
-        throw new Error('Invalid date value.');
-      } 
+      const date = new Date(value + "T00:00:00.000Z");
+      if (isNaN(date.getTime())) {
+        throw new Error("Invalid date value.");
+      }
       return date; // Return Date object
     }
-    throw new Error('Date must be a string in YYYY-MM-DD format');
+    throw new Error("Date must be a string in YYYY-MM-DD format");
   },
   //from client inline query
   parseLiteral(ast) {
-    if(ast.kind == Kind.STRING) {
-      const date = new Date(ast.value + 'T00:00:00.000Z');
-      if(isNaN(date.getTime())){
+    if (ast.kind == Kind.STRING) {
+      const date = new Date(ast.value + "T00:00:00.000Z");
+      if (isNaN(date.getTime())) {
         throw new Error("Invalid date format. Expected YYYY-MM-DD");
       }
       return date; // Return Date object
     }
     return new Error("Date literal must be a string in YYYY-MM-DD format");
   },
-
 });
 
 export const resolvers = {
   Date: dateScalar,
   Query: {
-    books: (_: Promise<BookI[] | []>, { limit, offset, sort }: { limit: number, offset: number, sort: string }) => {
-      return BookModel.getBooks(limit, offset)
+    books: (
+      _: Promise<BookI[] | []>,
+      {
+        limit,
+        offset,
+        categoryId,
+      }: { limit: number; offset: number; categoryId: string },
+    ) => {
+      return BookModel.getBooks(limit, offset, categoryId);
     },
     book: (_: Promise<BookI | null>, { id }: { id: ID }) =>
       BookModel.getBookById(id),
-    authors: () => AuthorModel.getAuthors(),
-    author: (_: Promise<AuthorI | null>, { id }: { id: ID }) => 
+    authors: (
+      _: Promise<AuthorI[] | []>,
+      { limit, sort }: { limit: number; sort: string },
+    ) => AuthorModel.getAuthors(limit, sort),
+    author: (_: Promise<AuthorI | null>, { id }: { id: ID }) =>
       AuthorModel.getAuthorById(id),
     categories: () => CategoryModel.getCategories(),
-    category: (_: Promise<CategoryI | null>, { id }: { id: ID }) => 
+    category: (_: Promise<CategoryI | null>, { id }: { id: ID }) =>
       CategoryModel.getCategoryById(id),
     publishers: () => PublisherModel.getPublishers(),
-    publisher: (_: Promise<PublisherI | null>, {id }: {id: ID}) => PublisherModel.getPublisherById(id)
+    publisher: (_: Promise<PublisherI | null>, { id }: { id: ID }) =>
+      PublisherModel.getPublisherById(id),
   },
 
   Mutation: {
     addAuthor: async (
       _parent: unknown,
-      { firstName, lastName, biography }: { firstName: string; lastName: string; biography: string }
+      {
+        firstName,
+        lastName,
+        biography,
+        imageUrl,
+      }: {
+        firstName: string;
+        lastName: string;
+        biography: string;
+        imageUrl: string;
+      },
     ) => {
-      return await new AuthorModel({ firstName, lastName, biography }).save();
+      return await new AuthorModel({
+        firstName,
+        lastName,
+        biography,
+        imageUrl,
+      }).save();
     },
     addBook: async (
       _parent: unknown,
@@ -79,7 +105,7 @@ export const resolvers = {
         releaseDate,
         authorIds,
         categoryIds,
-        publisherId
+        publisherId,
       }: {
         title: string;
         description: string;
@@ -88,7 +114,7 @@ export const resolvers = {
         authorIds: ID[];
         categoryIds: ID[];
         publisherId: ID;
-      }
+      },
     ) => {
       return await BookModel.addBook(
         title,
@@ -97,23 +123,26 @@ export const resolvers = {
         releaseDate,
         authorIds,
         categoryIds,
-        publisherId
+        publisherId,
       );
     },
     addCategory: async (_parent: unknown, { name }: { name: string }) => {
       return await CategoryModel.addCategory(name);
     },
-    addPublisher: async (_parent: unknown, { name, description }: { name: string, description: string }) => {
-      return await PublisherModel.addPublisher(name, description)
+    addPublisher: async (
+      _parent: unknown,
+      { name, description }: { name: string; description: string },
+    ) => {
+      return await PublisherModel.addPublisher(name, description);
     },
     updateBookCover: async (
       _parent: unknown,
-      { id, coverUrl }: { id: ID; coverUrl: string }
+      { id, coverUrl }: { id: ID; coverUrl: string },
     ) => {
       const book = await BookModel.findByIdAndUpdate(
         id,
         { coverUrl },
-        { new: true } // Return the updated document
+        { new: true }, // Return the updated document
       ).populate("author");
 
       if (!book) throw new Error("Book not found");
@@ -121,15 +150,17 @@ export const resolvers = {
     },
     updateBookCategory: async (
       _parent: unknown,
-      { id, categoryId }: { id: ID; categoryId: ID }
+      { id, categoryId }: { id: ID; categoryId: ID },
     ) => {
       const category = await CategoryModel.getCategoryById(categoryId);
       if (!category) throw new Error("Category not found");
       const book = await BookModel.findByIdAndUpdate(
         id,
         { category },
-        { new: true } // Return the updated document
-      ).populate("category").populate("author");
+        { new: true }, // Return the updated document
+      )
+        .populate("category")
+        .populate("author");
 
       if (!book) throw new Error("Book not found");
       return book;

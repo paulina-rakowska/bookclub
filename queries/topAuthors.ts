@@ -1,13 +1,12 @@
 import { gql } from "@apollo/client";
 
-const AUTHORS_QUERY = gql`
-  query GetAuthors {
-    authors {
+const TOP_AUTHORS_QUERY = gql`
+  query GetTopAuthors($limit: Int, $sort: String) {
+    authors(limit: $limit, sort: $sort) {
       id
       firstName
       lastName
       biography
-      imageUrl
       books {
         id
         title
@@ -17,4 +16,4 @@ const AUTHORS_QUERY = gql`
   }
 `;
 
-export default AUTHORS_QUERY;
+export default TOP_AUTHORS_QUERY;

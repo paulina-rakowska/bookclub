@@ -19,7 +19,11 @@ export interface BookI {
 }
 
 interface BookModelType extends Model<BookI> {
-  getBooks(limit?: number, offset?: number, sort?: string): Promise<BookI[]>;
+  getBooks(
+    limit?: number,
+    offset?: number,
+    categoryId?: string | null,
+  ): Promise<BookI[]>;
   getBookById(id: ID): Promise<BookI>;
   addBook(
     title: string,
@@ -28,10 +32,9 @@ interface BookModelType extends Model<BookI> {
     releaseDate: Date,
     authorIds: ID[],
     categoryIds: ID[],
-    publisherId: ID
+    publisherId: ID,
   ): Promise<BookI>;
 }
-
 
 const BookSchema = new Schema<BookI>({
   title: { type: String, required: true },
@@ -40,28 +43,37 @@ const BookSchema = new Schema<BookI>({
   releaseDate: { type: Date, required: true },
   author: [{ type: Schema.Types.ObjectId, ref: "Author" }],
   category: [{ type: Schema.Types.ObjectId, ref: "Category" }],
-  publisher: { type: Schema.Types.ObjectId, ref: "Publisher"}
+  publisher: { type: Schema.Types.ObjectId, ref: "Publisher" },
 });
 
-BookSchema.statics.getBooks = async function (limit: number, offset: number = 0, sort: string): Promise<BookI[]> {
+BookSchema.statics.getBooks = async function (
+  limit: number,
+  offset: number = 0,
+  categoryId: string | null,
+): Promise<BookI[]> {
   try {
-    const data = await this.find({})
-                            .populate("author")
-                            .populate("category")
-                            .populate("publisher")
-                            .skip(offset)
-                            .limit(limit || 0)
-                            .exec();
+    const filter = categoryId ? { category: categoryId } : {};
+
+    const data = await this.find(filter)
+      .populate("author")
+      .populate("category")
+      .populate("publisher")
+      .skip(offset)
+      .limit(limit || 0)
+      .exec();
     return data;
   } catch (err) {
     console.error("getBooks error:", err);
-    throw err; 
+    throw err;
   }
 };
 
 BookSchema.statics.getBookById = async function (id: ID): Promise<BookI> {
   try {
-    const data = await this.findById(id).populate("author").populate("category").populate("publisher");
+    const data = await this.findById(id)
+      .populate("author")
+      .populate("category")
+      .populate("publisher");
     if (!data) throw new Error("Book not found");
     return data as BookI;
   } catch (err) {
@@ -77,9 +89,8 @@ BookSchema.statics.addBook = async function (
   releaseDate: Date,
   authorIds: [ID],
   categoryIds: [ID],
-  publisherId: ID
+  publisherId: ID,
 ): Promise<BookI> {
-
   const authors = await AuthorModel.find({ _id: { $in: authorIds } });
 
   if (!authors || authors.length !== authorIds.length) {
@@ -96,7 +107,7 @@ BookSchema.statics.addBook = async function (
   }
 
   const publisher = await PublisherModel.findById(publisherId);
-  if(!publisher) {
+  if (!publisher) {
     throw new Error("No publisher found");
   }
 
@@ -107,7 +118,7 @@ BookSchema.statics.addBook = async function (
     releaseDate,
     author: authorIds,
     category: categoryIds || [],
-    publisher: publisher
+    publisher: publisher,
   });
   console.log(book);
   await book.save();
@@ -129,6 +140,7 @@ BookSchema.statics.addBook = async function (
 };
 
 const BookModel =
-  (models.Book as BookModelType) || model<BookI, BookModelType>("Book", BookSchema);
+  (models.Book as BookModelType) ||
+  model<BookI, BookModelType>("Book", BookSchema);
 
 export default BookModel;

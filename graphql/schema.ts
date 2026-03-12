@@ -2,7 +2,8 @@ import { gql } from "apollo-server-micro";
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
-export const typeDefs = gql`#graphql
+export const typeDefs = gql`
+  #graphql
   scalar Date
   type Book {
     id: ID!
@@ -19,6 +20,7 @@ export const typeDefs = gql`#graphql
     firstName: String!
     lastName: String!
     biography: String
+    imageUrl: String
     books: [Book!]!
   }
   type Category {
@@ -41,9 +43,9 @@ export const typeDefs = gql`#graphql
   }
 
   type Query {
-    books(limit: Int, offset: Int, sort: String): [Book]
+    books(limit: Int, offset: Int, categoryId: ID): [Book]
     book(id: ID!): Book
-    authors: [Author]
+    authors(limit: Int, sort: String): [Author]
     author(id: ID!): Author
     categories: [Category]
     category(id: ID!): Category
@@ -53,13 +55,32 @@ export const typeDefs = gql`#graphql
   }
 
   type Mutation {
-    addAuthor(firstName: String!, lastName: String!, biography: String): Author!
-    addBook(title: String!, description: String, coverUrl: String, releaseDate: Date, authorIds: [ID!]!, categoryIds: [ID], publisherId: ID!): Book!
+    addAuthor(
+      firstName: String!
+      lastName: String!
+      biography: String
+      imageUrl: String
+    ): Author!
+    addBook(
+      title: String!
+      description: String
+      coverUrl: String
+      releaseDate: Date
+      authorIds: [ID!]!
+      categoryIds: [ID]
+      publisherId: ID!
+    ): Book!
     addCategory(name: String!): Category!
     addPublisher(name: String!, description: String): Publisher!
-    addSlide(title: String!, subtitle: String, description: String, linkText: String!, linkHref: String!, image: String!): Slide!
-    updateBookCover(id: ID!, coverUrl: String!): Book!  
-    updateBookCategory(id: ID!, categoryId: ID!): Book! 
+    addSlide(
+      title: String!
+      subtitle: String
+      description: String
+      linkText: String!
+      linkHref: String!
+      image: String!
+    ): Slide!
+    updateBookCover(id: ID!, coverUrl: String!): Book!
+    updateBookCategory(id: ID!, categoryId: ID!): Book!
   }
-
 `;

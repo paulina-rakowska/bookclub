@@ -20,24 +20,34 @@ export function BookFilters({
       <div className="space-y-2">
         <h3 className="font-semibold mb-3">Categories</h3>
         <div className="flex flex-wrap gap-2">
-            <Button
-                variant="filter"
-                size="filter"
-                className="w-full"
-                data-active={selectedCategory === null}
-                onClick={() => onCategoryChange(null)}
-            >
+          <Button
+            variant={selectedCategory === null ? "default" : "outline"}
+            size="filter"
+            className={
+              selectedCategory === null
+                ? "bg-primary w-full cursor-pointer"
+                : "w-full cursor-pointer"
+            }
+            onClick={() => onCategoryChange(null)}
+          >
             All Categories
-            </Button>
+          </Button>
           {categories &&
             categories.map((category: CategoryI) => (
               <Button
                 key={category.id}
-                variant="filter"
+                variant={
+                  selectedCategory === category.id ? "default" : "outline"
+                }
                 size="filter"
-                className="w-full"
-                data-active={selectedCategory === String(category.id)}
-                onClick={() => onCategoryChange(category.id ? String(category.id) : null)}
+                className={
+                  selectedCategory === category.id
+                    ? "bg-primary w-full cursor-pointer"
+                    : "w-full cursor-pointer"
+                }
+                onClick={() =>
+                  onCategoryChange(category.id ? String(category.id) : null)
+                }
               >
                 {category.name}
               </Button>

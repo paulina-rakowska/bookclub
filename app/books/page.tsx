@@ -1,20 +1,20 @@
 // app/books/page.tsx (Server Component)
-import Header from '@/components/shared/Header';
-import Footer from '@/components/shared/Footer';
-import Books from '@/components/Books';
-import BOOKS_QUERY from '@/queries/booksQuery';
-import { print } from 'graphql';
-import CATEGORIES_QUERY from '@/queries/categoriesQuery';
+import Header from "@/components/shared/Header";
+import Footer from "@/components/shared/Footer";
+import Books from "@/components/Books";
+import BOOKS_QUERY from "@/queries/booksQuery";
+import { print } from "graphql";
+import CATEGORIES_QUERY from "@/queries/categoriesQuery";
 
-async function getBooks(limit: number, offset: number = 0) {
-  const res = await fetch('http://localhost:3000/api/graphql', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+async function getBooks(limit?: number, offset: number = 0) {
+  const res = await fetch("http://localhost:3000/api/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: print(BOOKS_QUERY),
-      variables: {limit, offset}
+      variables: { limit, offset },
     }),
-    cache: 'no-store', // or 'force-cache' for static generation
+    cache: "no-store", // or 'force-cache' for static generation
   });
 
   const { data } = await res.json();
@@ -23,24 +23,23 @@ async function getBooks(limit: number, offset: number = 0) {
 
   return {
     books: fetchedBooks,
-    all: all
+    all: all,
   };
 }
 
 async function getCategories() {
-  const res = await fetch('http://localhost:3000/api/graphql', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  const res = await fetch("http://localhost:3000/api/graphql", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      query: print(CATEGORIES_QUERY)
+      query: print(CATEGORIES_QUERY),
     }),
-    cache: 'no-store', // or 'force-cache' for static generation
+    cache: "no-store", // or 'force-cache' for static generation
   });
 
   const { data } = await res.json();
   return data.categories;
 }
-
 
 export default async function BooksPage() {
   const { books, all } = await getBooks();
@@ -58,6 +57,6 @@ export default async function BooksPage() {
 }
 
 export const metadata = {
-  title: 'Books Catalogue',
-  description: 'Discover your next favorite book from our curated collection',
+  title: "Books Catalogue",
+  description: "Discover your next favorite book from our curated collection",
 };

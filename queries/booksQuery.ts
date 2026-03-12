@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 const BOOKS_QUERY = gql`
-  query GetBooks($limit: Int, $offset: Int) {
-    books (limit: $limit, offset: $offset) {
+  query GetBooks($limit: Int, $offset: Int, $categoryId: ID) {
+    books(limit: $limit, offset: $offset, categoryId: $categoryId) {
       id
       title
       description
